@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E6A16532-396A-4D74-9277-4D9DDB85524D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DoubleRainbow</RootNamespace>
+    <AssemblyName>DoubleRainbow</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>DR.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LibUsbDotNet">
+      <HintPath>C:\Program Files\LibUsbDotNet\LibUsbDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Blender.cs" />
+    <Compile Include="BPMCalc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BPMCalc.Designer.cs">
+      <DependentUpon>BPMCalc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Colors.cs" />
+    <Compile Include="ColorWheel\ColorChangedEventArgs.cs" />
+    <Compile Include="ColorWheel\ColorChooser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColorTypes.cs" />
+    <Compile Include="ColorWheel\ColorWheel.cs" />
+    <Compile Include="CPI\Enumerations.cs" />
+    <Compile Include="EffectThread.cs" />
+    <Compile Include="Exemplar.cs" />
+    <Compile Include="CPI\GlobalSuppressions.cs" />
+    <Compile Include="CPI\Orientation3D.cs" />
+    <Compile Include="CPI\Plotter3D.cs" />
+    <Compile Include="CPI\Point3D.cs" />
+    <Compile Include="Extred.cs" />
+    <Compile Include="KeyEffect.cs" />
+    <Compile Include="KeyMonitor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KeyMonitor.Designer.cs">
+      <DependentUpon>KeyMonitor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Simple.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Simple.Designer.cs">
+      <DependentUpon>Simple.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Spiral.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Spiral.Designer.cs">
+      <DependentUpon>Spiral.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Globals.cs" />
+    <Compile Include="CPI\MathUtil.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rainbow.cs" />
+    <Compile Include="Vector3D.cs" />
+    <Compile Include="Workshop.cs" />
+    <EmbeddedResource Include="BPMCalc.resx">
+      <DependentUpon>BPMCalc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ColorWheel\ColorChooser.resx">
+      <DependentUpon>ColorChooser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyMonitor.resx">
+      <DependentUpon>KeyMonitor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Simple.resx">
+      <DependentUpon>Simple.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Spiral.resx">
+      <DependentUpon>Spiral.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DR.ico" />
+    <Content Include="Rainbow-rainbows-4128014-1600-1200.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
