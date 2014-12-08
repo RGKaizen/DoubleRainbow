@@ -11,14 +11,6 @@ namespace DoubleRainbow
         public const int KaiLength = 48;
         public const int ZenLength = 32;
 
-        public static ColorTypes.RGB wheel = null;
-        public static bool isChanged = false;
-        public static void passColor(ColorTypes.RGB inRGB)
-        {
-            wheel = new ColorTypes.RGB(inRGB.Red, inRGB.Green, inRGB.Blue);
-            isChanged = true;
-        }
-
         // Functions
         public static Random n = new Random();
         public static ColorTypes.RGB randomRGB()
