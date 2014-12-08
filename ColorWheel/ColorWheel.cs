@@ -296,7 +296,7 @@ namespace DoubleRainbow
                     HSV.Saturation = (int)(distance * 255);
                     HSV.Value = brightness;
                     RGB = new ColorTypes.RGB(HSV);
-                    fullColor = ColorTypes.HSVtoColor(HSV.Hue, HSV.Saturation, 255);
+                    fullColor = ColorTypes.HSVtoColor(new ColorTypes.HSV(HSV.Hue, HSV.Saturation, 255));
                     break;
             }
             selectedColor = ColorTypes.HSVtoColor(HSV);
@@ -390,7 +390,7 @@ namespace DoubleRainbow
             // The full color is the same as HSV, except that the 
             // brightness is set to full (255). This is the top-most
             // color in the brightness gradient.
-            fullColor = ColorTypes.HSVtoColor(HSV.Hue, HSV.Saturation, 255);
+            fullColor = ColorTypes.HSVtoColor(new ColorTypes.HSV(HSV.Hue, HSV.Saturation, 255));
         }
 
         private void DrawLinearGradient(Color TopColor)
@@ -503,7 +503,7 @@ namespace DoubleRainbow
 
             for (int i = 0; i <= COLOR_COUNT - 1; i++)
             {
-                Color temp = ColorTypes.HSVtoColor((int)((double)(i * 255) / COLOR_COUNT), 255, 255);
+                Color temp = ColorTypes.HSVtoColor(new ColorTypes.HSV((int)((double)(i * 255) / COLOR_COUNT), 255, 255));
                 int r = max(temp.R * 2);
                 int g = max(temp.G * 2);
                 int b = max(temp.B * 2);

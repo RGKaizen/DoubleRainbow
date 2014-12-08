@@ -299,12 +299,6 @@ namespace DoubleRainbow
 
         }
 
-        public static RGB HSVtoRGB(int H, int S, int V)
-        {
-            // H, S, and V must all be between 0 and 255.
-            return new RGB(new HSV(H, S, V));
-        }
-
         public static Color HSVtoColor(HSV hsv)
         {
             if (hsv == null)
@@ -312,11 +306,6 @@ namespace DoubleRainbow
 
             ColorTypes.RGB RGB = new RGB(hsv);
             return Color.FromArgb(RGB.Red, RGB.Green, RGB.Blue);
-        }
-
-        public static Color HSVtoColor(int H, int S, int V)
-        {
-            return HSVtoColor(new HSV(H, S, V));
         }
 
         public static Color RGBtoColor(RGB rgb)
