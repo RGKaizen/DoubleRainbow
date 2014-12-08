@@ -1,7 +1,7 @@
 ﻿using System;
 namespace DoubleRainbow
 {
-    partial class MainWindow
+    partial class RainbowGenerator
     {
         /// <summary>
         /// Required designer variable.
@@ -33,7 +33,7 @@ namespace DoubleRainbow
             this.tryButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.animWorker = new System.ComponentModel.BackgroundWorker();
             this.Slider1 = new System.Windows.Forms.HScrollBar();
             this.Slider1Lbl = new System.Windows.Forms.Label();
             this.Slider1ValueLbl = new System.Windows.Forms.Label();
@@ -44,9 +44,9 @@ namespace DoubleRainbow
             this.Slider3ValueLbl = new System.Windows.Forms.Label();
             this.Slider3Lbl = new System.Windows.Forms.Label();
             this.Slider3 = new System.Windows.Forms.HScrollBar();
-            this.button3 = new System.Windows.Forms.Button();
-            this.spiral = new DoubleRainbow.Spiral();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.label1 = new System.Windows.Forms.Label();
+            this.refreshLbl = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // posBox
@@ -65,7 +65,6 @@ namespace DoubleRainbow
             this.tryButton.TabIndex = 4;
             this.tryButton.Text = "Test";
             this.tryButton.UseVisualStyleBackColor = true;
-            this.tryButton.Click += new System.EventHandler(this.testButton);
             // 
             // button1
             // 
@@ -87,16 +86,15 @@ namespace DoubleRainbow
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.PlayPause);
             // 
-            // backgroundWorker1
+            // animWorker
             // 
-            this.backgroundWorker1.WorkerSupportsCancellation = true;
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.animWorker.WorkerSupportsCancellation = true;
+            this.animWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.animWorker_DoWork);
             // 
             // Slider1
             // 
             this.Slider1.Location = new System.Drawing.Point(66, 108);
             this.Slider1.Maximum = 1000;
-            this.Slider1.Minimum = 1;
             this.Slider1.Name = "Slider1";
             this.Slider1.Size = new System.Drawing.Size(216, 18);
             this.Slider1.SmallChange = 5;
@@ -153,7 +151,6 @@ namespace DoubleRainbow
             // 
             this.Slider2.Location = new System.Drawing.Point(66, 138);
             this.Slider2.Maximum = 1000;
-            this.Slider2.Minimum = 1;
             this.Slider2.Name = "Slider2";
             this.Slider2.Size = new System.Drawing.Size(216, 18);
             this.Slider2.SmallChange = 5;
@@ -183,7 +180,6 @@ namespace DoubleRainbow
             // 
             this.Slider3.Location = new System.Drawing.Point(66, 166);
             this.Slider3.Maximum = 1000;
-            this.Slider3.Minimum = 1;
             this.Slider3.Name = "Slider3";
             this.Slider3.Size = new System.Drawing.Size(216, 18);
             this.Slider3.SmallChange = 5;
@@ -191,36 +187,35 @@ namespace DoubleRainbow
             this.Slider3.Value = 125;
             this.Slider3.Scroll += new System.Windows.Forms.ScrollEventHandler(this.Slider3_Scroll);
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(174, 316);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 21;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // spiral
-            // 
-            this.spiral.BackColor = System.Drawing.Color.White;
-            this.spiral.Location = new System.Drawing.Point(377, 4);
-            this.spiral.Name = "spiral";
-            this.spiral.Size = new System.Drawing.Size(700, 700);
-            this.spiral.TabIndex = 20;
-            this.spiral.Text = "Spiral";
-            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // MainWindow
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(21, 80);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(34, 13);
+            this.label1.TabIndex = 23;
+            this.label1.Text = "Sleep";
+            // 
+            // refreshLbl
+            // 
+            this.refreshLbl.AutoSize = true;
+            this.refreshLbl.Location = new System.Drawing.Point(296, 80);
+            this.refreshLbl.Name = "refreshLbl";
+            this.refreshLbl.Size = new System.Drawing.Size(33, 13);
+            this.refreshLbl.TabIndex = 24;
+            this.refreshLbl.Text = "T: ms";
+            // 
+            // RainbowGenerator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1091, 734);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.spiral);
+            this.ClientSize = new System.Drawing.Size(357, 202);
+            this.Controls.Add(this.refreshLbl);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.Slider3ValueLbl);
             this.Controls.Add(this.Slider3Lbl);
             this.Controls.Add(this.Slider3);
@@ -235,9 +230,8 @@ namespace DoubleRainbow
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tryButton);
             this.Controls.Add(this.posBox);
-            this.Name = "MainWindow";
+            this.Name = "RainbowGenerator";
             this.Text = "Main Window";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_Closing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -249,7 +243,7 @@ namespace DoubleRainbow
         private System.Windows.Forms.Button tryButton;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.ComponentModel.BackgroundWorker animWorker;
         private System.Windows.Forms.HScrollBar Slider1;
         private System.Windows.Forms.Label Slider1Lbl;
         private System.Windows.Forms.Label Slider1ValueLbl;
@@ -260,9 +254,9 @@ namespace DoubleRainbow
         private System.Windows.Forms.Label Slider3ValueLbl;
         private System.Windows.Forms.Label Slider3Lbl;
         private System.Windows.Forms.HScrollBar Slider3;
-        private Spiral spiral;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label refreshLbl;
     }
 }
 

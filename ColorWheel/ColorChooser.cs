@@ -40,14 +40,7 @@ namespace ColorChooserCSharp
 
 		public ColorChooser()
 		{
-			//
-			// Required for Windows Form Designer support
-			//
 			InitializeComponent();
-
-			//
-			// TODO: Add any constructor code after InitializeComponent call
-			//
 		}
 
 		/// <summary>
@@ -333,8 +326,8 @@ namespace ColorChooserCSharp
 			None
 		}
 
-		private ChangeStyle changeType = ChangeStyle.None;
-		private Point selectedPoint;
+		private ChangeStyle _changeType = ChangeStyle.None;
+		private Point _selectedPoint;
 
 		private ColorWheel myColorWheel;
         private ColorTypes.RGB RGB;
@@ -365,13 +358,12 @@ namespace ColorChooserCSharp
 			// the locations of the color wheel itself, the
 			// brightness area, and the position of the selected color.
 			myColorWheel = new ColorWheel(ColorRectangle, BrightnessRectangle, SelectedColorRectangle);
-			myColorWheel.ColorChanged += 
-				new ColorWheel.ColorChangedEventHandler(this.myColorWheel_ColorChanged);
+			myColorWheel.ColorChanged += new ColorWheel.ColorChangedEventHandler(this.colorWheel_Changed);
 
 			// Set the RGB and HSV values 
 			// of the NumericUpDown controls.
             SetRGB(new ColorTypes.RGB(127, 0, 0));
-			SetHSV(new ColorTypes.HSV(127,0,0));		
+			SetHSV(new ColorTypes.HSV(127, 0, 0));		
 		}
 
 		private void HandleMouse(object sender,  MouseEventArgs e)
@@ -381,8 +373,8 @@ namespace ColorChooserCSharp
 			// force angle repaint of the color wheel.
 			if ( e.Button == MouseButtons.Left ) 
 			{
-				changeType = ChangeStyle.MouseMove;
-				selectedPoint = new Point(e.X, e.Y);
+				_changeType = ChangeStyle.MouseMove;
+				_selectedPoint = new Point(e.X, e.Y);
 				this.Invalidate();
 			}
 		}
@@ -390,7 +382,7 @@ namespace ColorChooserCSharp
 		private void frmMain_MouseUp(object sender,  MouseEventArgs e)
 		{
 			myColorWheel.SetMouseUp();
-			changeType = ChangeStyle.None;
+			_changeType = ChangeStyle.None;
 		}
 
         private void SetRGBLabels(ColorTypes.RGB RGB) 
@@ -404,7 +396,7 @@ namespace ColorChooserCSharp
 		{
 			RefreshText(lblHue, HSV.Hue);
 			RefreshText(lblSaturation, HSV.Saturation);
-			RefreshText(lblBrightness, HSV.value);
+			RefreshText(lblBrightness, HSV.Value);
 		}
 
         private void SetRGB(ColorTypes.RGB RGB) 
@@ -416,7 +408,6 @@ namespace ColorChooserCSharp
 			RefreshValue(hsbBlue, RGB.Blue);
 			RefreshValue(hsbGreen, RGB.Green);
 			SetRGBLabels(RGB);
-            Globals.passColor(RGB);
 	   }
 
 		private void SetHSV( ColorTypes.HSV HSV) 
@@ -427,15 +418,15 @@ namespace ColorChooserCSharp
 			// Update the HSV values on the form.
 			RefreshValue(hsbHue, HSV.Hue);
 			RefreshValue(hsbSaturation, HSV.Saturation);
-			RefreshValue(hsbBrightness, HSV.value);
+			RefreshValue(hsbBrightness, HSV.Value);
 			SetHSVLabels(HSV);
 			}
 
 		private void RefreshValue(HScrollBar hsb, int value) 
 		{
-            if (value > 256)
+            if (value >= 256)
             {
-                value = 256;
+                value = 255;
             }
             hsb.Value = value;
 		}
@@ -459,64 +450,68 @@ namespace ColorChooserCSharp
 				// Indicate the color change type. Either RGB or HSV
 				// will cause the color wheel to update the position
 				// of the pointer.
-				changeType = ChangeStyle.RGB;
+				_changeType = ChangeStyle.RGB;
                 SetRGB(new ColorTypes.RGB(value.R, value.G, value.B));
-				SetHSV(ColorTypes.RGBtoHSV(RGB));
+                SetHSV(new ColorTypes.HSV(RGB));
 			}
 		}
 
-		private void myColorWheel_ColorChanged(object sender,  ColorChangedEventArgs e)  
+		private void colorWheel_Changed(object sender,  ColorChangedEventArgs e)  
 		{
+            if(e.RGB == null || e.HSV == null)
+            {
+                return;
+            }
+
 			SetRGB(e.RGB);
 			SetHSV(e.HSV);
-            for(int i = 0; i < Globals.KaiLength; i++)
-            {
-                Rainbow.KaiLight(i, e.RGB);
-            }
-            Rainbow.KaiShow();
-
+            RainbowUtils.fillBoth(e.RGB);
+            
         }
 
+        // If the H, S, or V values change, use this 
+        // code to update the RGB values and invalidate
+        // the color wheel (so it updates the pointers).
+        // Check the isInUpdate flag to avoid recursive events
+        // when you update the NumericUpdownControls.
         private void HandleHSVScroll(object sender, ScrollEventArgs e)  
-			// If the H, S, or V values change, use this 
-			// code to update the RGB values and invalidate
-			// the color wheel (so it updates the pointers).
-			// Check the isInUpdate flag to avoid recursive events
-			// when you update the NumericUpdownControls.
 		{
-			changeType = ChangeStyle.HSV;
+			_changeType = ChangeStyle.HSV;
 			HSV = new ColorTypes.HSV(hsbHue.Value, hsbSaturation.Value, hsbBrightness.Value);
-			SetRGB(ColorTypes.HSVtoRGB(HSV));
+			SetRGB(new ColorTypes.RGB(HSV));
 			SetHSVLabels(HSV);
 			this.Invalidate();
+            RainbowUtils.fillBoth(RGB);
 		}
 
+        // If the R, G, or B values change, use this 
+        // code to update the HSV values and invalidate
+        // the color wheel (so it updates the pointers).
+        // Check the isInUpdate flag to avoid recursive events
+        // when you update the NumericUpdownControls.
 		private void HandleRGBScroll(object sender, ScrollEventArgs e)
 		{
-			// If the R, G, or B values change, use this 
-			// code to update the HSV values and invalidate
-			// the color wheel (so it updates the pointers).
-			// Check the isInUpdate flag to avoid recursive events
-			// when you update the NumericUpdownControls.
-			changeType = ChangeStyle.RGB;
+
+			_changeType = ChangeStyle.RGB;
             RGB = new ColorTypes.RGB(hsbRed.Value, hsbGreen.Value, hsbBlue.Value);
-			SetHSV(ColorTypes.RGBtoHSV(RGB));
+            SetHSV(new ColorTypes.HSV(RGB));
 			SetRGBLabels(RGB);
 			this.Invalidate();
+            RainbowUtils.fillBoth(RGB);
 		}
 
 		private void ColorChooser_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
 		{
 			// Depending on the circumstances, force angle repaint
 			// of the color wheel passing different information.
-			switch (changeType)
+			switch (_changeType)
 			{
 				case ChangeStyle.HSV:
 					myColorWheel.Draw(e.Graphics, HSV);
 					break;
 				case ChangeStyle.MouseMove:
 				case ChangeStyle.None:
-					myColorWheel.Draw(e.Graphics, selectedPoint);
+					myColorWheel.Draw(e.Graphics, _selectedPoint);
 					break;
 				case ChangeStyle.RGB:
 					myColorWheel.Draw(e.Graphics, RGB);
@@ -524,52 +519,6 @@ namespace ColorChooserCSharp
 			}
 		}
 
-        public void updateScreen(Color color)
-        {
-            ActiveColor = color;
-            SetRGB(RGB);
-            SetHSV(HSV);
-            this.Invalidate();
-        }
-
-        private void ColorCmbBox_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            var combo = sender as ComboBox;
-
-            // Draw the background of the item.
-            e.DrawBackground();
-
-            // Create angle square filled with the animals color. Vary the size 
-            // of the rectangle based on the length of the animals name.
-            Rectangle rectangle = new Rectangle(2, e.Bounds.Top + 2,
-                    e.Bounds.Height, e.Bounds.Height - 4);
-
-            if (e.Index < 0)
-                return;
-
-            e.Graphics.FillRectangle(new SolidBrush(((ColorItem)combo.Items[e.Index]).color), rectangle);
-            e.Graphics.DrawString((((ColorItem)combo.Items[e.Index]).name), e.Font, System.Drawing.Brushes.Black, new RectangleF(e.Bounds.X + rectangle.Width, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height));
-
-            // Draw the focus rectangle if the mouse hovers over an item.
-            e.DrawFocusRectangle();
-        }
 	}
-
-    public class ColorItem
-    {
-        public Color color;
-        public String name = null;
-
-        public ColorItem(String nm, Color clr)
-        {
-            color = clr;
-            name = nm;
-        }
-
-        public override string ToString()
-        {
-            return name;
-        }
-    }
 }
 

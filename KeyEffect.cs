@@ -11,7 +11,6 @@ namespace DoubleRainbow
         public ColorTypes.RGB rgb;
         public int location;
         public Keys key;
-        public int id;
 
         public KeyEffect(String line)
         {
@@ -25,7 +24,7 @@ namespace DoubleRainbow
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error creating KeyEffect\n\n: " + line);
+                Console.WriteLine("Error creating KeyEffect\n\n: " + line + e);
             }
         }
 

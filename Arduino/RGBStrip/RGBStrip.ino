@@ -6,8 +6,8 @@
 /*****************************************************************************/
 
 // Chose 2 pins for output; can be any valid output pins:
-int dataPin2  = 13; //PWM
-int clockPin2 = 2;
+int dataPin2  = 11; //PWM
+int clockPin2 = 3;
 int dataPin1  = 5; //PWM
 int clockPin1 = 8;
 
@@ -36,16 +36,36 @@ void setup() {
   strip2.show();
 }
 
+void SpeedTest()
+{
+  while(true)
+  {
+    Serial.print("dsd\n");
+    for(int i = 0; i < 32; i++)
+    {
+      strip2.setPixelColor(i, strip1.Color(0,127,0));
+      strip2.show();
+    }
+    for(int i = 0; i < 32; i++)
+    {
+      strip1.setPixelColor(i, strip1.Color(0,0,127));
+      strip1.show();
+    }
+  }
+}
+
 
 void loop() {
+  
+  //SpeedTest();
   
   while (Serial.available() > 0) {     
     //char incomingByte = Serial.read();
     char bytes[4] = {0};
     Serial.readBytes(bytes, 4);
-    //Serial.write("\nStart\n1: ");   
+    Serial.write("\nStart\n1: ");   
     byte cmd_byte = byte(bytes[0]);    
-    //Serial.print(cmd_byte, BIN);
+    Serial.print(cmd_byte, BIN);
     
     int cmd = bitRead(cmd_byte, 7);
     int strip = bitRead(cmd_byte, 6);
@@ -55,27 +75,26 @@ void loop() {
     if(strip == 1)
      pos = pos - 64;
     
-    //Serial.print("\nCmd: ");
-    //Serial.print(cmd);
+    Serial.print("\nCmd: ");
+    Serial.print(cmd);
     
-    //Serial.print("\nstrip: ");
-    //Serial.print(strip);
+    Serial.print("\nstrip: ");
+    Serial.print(strip);
     
-    //Serial.print("\npos: ");
-    //Serial.print(pos);
+    Serial.print("\npos: ");
+    Serial.print(pos);
    
-    //Serial.write("\n2: "); 
-    //Serial.print(bytes[1], BIN);
+    Serial.write("\n2: "); 
+    Serial.print(bytes[1], BIN);
     int red = bytes[1];
     
-    //Serial.write("\n3: ");
-    //Serial.print(bytes[2], BIN);
+    Serial.write("\n3: ");
+    Serial.print(bytes[2], BIN);
     int green = bytes[2];
     
-    //Serial.write("\n4: ");
-    //Serial.print(bytes[3], BIN);
+    Serial.write("\n4: ");
+    Serial.print(bytes[3], BIN);
     int blue = bytes[3];
-    //process(incomingByte);
     
     if(cmd==0)
     {
@@ -87,21 +106,21 @@ void loop() {
       }
       else
       {
-        //Serial.print(" STRIP 2");        
+        Serial.print(" STRIP 2");        
         strip2.setPixelColor(pos, strip2.Color(red,green,blue));
       }
     }
     else
     {
-      //Serial.print("\n SHOW");
+      Serial.print("\n SHOW");
       if(strip == 0)
       {  
-        //Serial.print(" STRIP 1");
+        Serial.print(" STRIP 1");
         strip1.show();
       }
       else
       {
-        //Serial.print(" STRIP 2");       
+        Serial.print(" STRIP 2");       
         strip2.show();
       }
     }
@@ -118,69 +137,5 @@ void loop() {
 // 7 bits [21 - 27] b
 // total = 28
 
-void SpeedTest(){
-  while(true){
-  for(int i = 0; i < 32; i++){
-    strip2.setPixelColor(i, strip1.Color(127,0,0));
-    strip2.show();
-  }
-    for(int i = 0; i < 32; i++){
-    strip1.setPixelColor(i, strip1.Color(127,0,0));
-    strip1.show();
-  }
-  }
-}
 
-void process(char cmd) {
-  //Serial.println("Processing");
-    if(cmd == 'c')
-    {   
-        stripSelect = Serial.parseInt(); 
-        //Serial.print("stripSelect: ");
-        //Serial.println(stripSelect);
-        
-        Serial.read();      
-        pos = Serial.parseInt(); 
-        //Serial.print("pos: ");
-        //Serial.println(pos);
-        
-        Serial.read();         
-        red = Serial.parseInt(); 
-        //Serial.print("red: ");
-        //Serial.println(red);
-        
-        Serial.read();        
-        green = Serial.parseInt(); 
-        //Serial.print("green: ");
-        //Serial.println(green);
-        
-        Serial.read();        
-        blue = Serial.parseInt(); 
-        //Serial.print("blue: ");
-        //Serial.println(blue);
-  
-      // look for the newline. That's the end of your
-      // sentence:
-      if (Serial.read() == '*') {   
-        if(stripSelect == 1){  
-          strip1.setPixelColor(pos, strip1.Color(red,green,blue));
-        }
-        if(stripSelect == 2){  
-          strip2.setPixelColor(pos, strip2.Color(red,green,blue));
-        }
-      }
-    }
-    else if(cmd == 'b')
-    {
-      strip1.show();
-    }
-    else if(cmd == 'e')
-    {
-      strip2.show();
-    }
-      
-
-       
-
-}
 

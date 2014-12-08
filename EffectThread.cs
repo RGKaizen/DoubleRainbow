@@ -33,7 +33,7 @@ namespace DoubleRainbow
             catch (ThreadInterruptedException e)
             {
                 Console.WriteLine("newThread cannot go to sleep - " +
-                    "interrupted by main thread.");
+                    "interrupted by main thread." + e);
             }
 
             Console.WriteLine("worker thread: terminating gracefully.");
@@ -46,7 +46,7 @@ namespace DoubleRainbow
             ColorTypes.RGB rgb = _rgb;//Globals.randomRGB();
             for(int i = -2; i < 3; i++)
             {
-                Rainbow.KaiLight(_center+i, rgb);
+                //Rainbow.KaiLight(_center+i, rgb);
             }
             Rainbow.KaiShow();
         }
@@ -59,7 +59,7 @@ namespace DoubleRainbow
             {
                 for (int i = -3; i < 3; i++)
                 {
-                    Rainbow.KaiLight(_center + i, rgb);
+                    //Rainbow.KaiLight(_center + i, rgb);
                     rgb = Blender.variableMix(rgb, blank, 0.9);
                 }
                 Rainbow.KaiShow();
@@ -105,7 +105,7 @@ namespace DoubleRainbow
             _shouldStop = true;
             for(int i = -3; i < 3; i++)
             {
-                Rainbow.KaiLight(_center+i, blank);
+                //Rainbow.KaiLight(_center+i, blank);
             }
            Rainbow.KaiShow();
         }

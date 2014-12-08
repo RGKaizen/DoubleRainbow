@@ -16,15 +16,15 @@ namespace DoubleRainbow
     public static class Rainbow
     {
         #region USB Communications
-        public static UsbDevice MyUsbDevice;
+        private static UsbDevice MyUsbDevice;
 
         #region SET YOUR USB Vendor and Product ID!
 
-        public static UsbDeviceFinder MyUsbFinder = new UsbDeviceFinder(9025, 32822);
+        private static UsbDeviceFinder MyUsbFinder = new UsbDeviceFinder(9025, 32822);
 
         #endregion
 
-        static UsbEndpointWriter writer = null;
+        private static UsbEndpointWriter writer = null;
 
         public static bool Connect()
         {
@@ -93,7 +93,7 @@ namespace DoubleRainbow
             }
         }
 
-        public static void ConfigTest()
+        private static void ConfigTest()
         {
             // Dump all devices and descriptor information to console output.
             UsbRegDeviceList allDevices = UsbDevice.AllDevices;
@@ -127,6 +127,8 @@ namespace DoubleRainbow
         #endregion
 
         public static Boolean Connected = false;
+        public static Boolean KaiEnabled = false;
+        public static Boolean ZenEnabled = false;
 
         private static ColorTypes.RGB[] _kai;
         private static ColorTypes.RGB[] _zen;
@@ -145,6 +147,7 @@ namespace DoubleRainbow
             set { Array.Copy(value, _zen, 32);}
         }
 
+        // Creates static arrays and initializes to default color;
         static Rainbow()
         {
 
@@ -167,89 +170,49 @@ namespace DoubleRainbow
             }
         }
 
-        #region public functions
+        #region Public Functions
 
-        // Use when modifying _kai directly
+        // Updates only different values to LED strip
         public static bool KaiUpdate()
         {
-            bool hasChanged = false;
-            for (int i = 0; i < Globals.KaiLength; i++)
-            {
-                if (_kai[i].different(_kaiBuffer[i]))
-                {
-                    hasChanged = true;
-                    KaiLight(i, _kai[i]);
-                }
-            }
-            copyToBuffer(1);
-            return hasChanged;
+            return update(_kai, _kaiBuffer, Globals.KaiLength, 1);
         }
-
-        // Updates _zen from _zenBuffer
         public static bool ZenUpdate()
         {
-            bool hasChanged = false;
-            for (int i = 0; i < Globals.ZenLength; i++)
-            {
-                if (_zen[i].different(_zenBuffer[i]))
-                {
-                    hasChanged = true;
-                    ZenLight(i, _zen[i]);
-                }
-            }
-            copyToBuffer(2);
-            return hasChanged;
+            return update(_zen, _zenBuffer, Globals.ZenLength, 2);
         }
 
-        // LED So _kai
-        // Position and ActiveColor
-        // Truely lit alive
-        public static bool KaiLight(int pos, ColorTypes.RGB rgb)
+        // Gurantees position isn't out of bounds
+        public static void KaiSet(int pos, ColorTypes.RGB rgb)
         {
             posClamp(ref pos, 1);
-
-            byte[] bytes = new byte[4];
-
-            bytes[0] = (byte)pos;
-            bytes[1] = (byte)rgb.Red;
-            bytes[2] = (byte)rgb.Green;
-            bytes[3] = (byte)rgb.Blue;
-
-            sendString(bytes);
-            return true;
+            _kai[pos] = rgb;
         }
-
-        // Lights up _zen.
-        public static bool ZenLight(int pos, ColorTypes.RGB rgb)
+        public static void ZenSet(int pos, ColorTypes.RGB rgb)
         {
-            posClamp(ref pos, 1);
-
-            byte[] bytes = new byte[4];
-
-            bytes[0] = (byte)pos;
-
-            // Select Zen
-            bytes[0] += (byte)64;
-
-            bytes[1] = (byte)rgb.Red;
-            bytes[2] = (byte)rgb.Green;
-            bytes[3] = (byte)rgb.Blue;
-
-            sendString(bytes);
-            return true;
+            posClamp(ref pos, 2);
+            _zen[pos] = rgb;
         }
 
         // Displays Arduino Buffer to reality
         public static bool KaiShow()
         {
-            return display(1);
+            if (KaiEnabled)
+            {
+                return display(1);
+            }
+            else return false;
         }
         public static bool ZenShow()
         {
-            return display(2);
+            if (ZenEnabled)
+            {
+                return display(2);
+            }
+            else return false;
         }
 
-        // Clears Arduino's buffer and demonstrates
+        // Clears Arduino's buffer and updates
         public static void KaiClear()
         {
             clear(1);
@@ -259,8 +222,35 @@ namespace DoubleRainbow
             clear(2);
         }
 
+        // Diagnostics function to determine which strip is which by color
+        public static void reportStrip()
+        {
+            clear(1);
+            clear(2);
+            sendClr(0, new ColorTypes.RGB(127, 0, 0), 1);
+            sendClr(0, new ColorTypes.RGB(0, 127, 0), 2);
+            display(1);
+            display(2);
+        }
+        public static void BuddySystem()
+        {
+            for (int i = 0; i < Globals.ZenLength; i++)
+            {
+                double zen_ratio = i;
+                zen_ratio = zen_ratio * Globals.KaiLength / Globals.ZenLength;
+                //Console.WriteLine("Kai[" + zen_ratio + "] Zen[" + i + "]");
+                Zen[i] = Kai[(int)Math.Floor(zen_ratio)];
+            }
+            if (ZenUpdate())
+                ZenShow();
+        }
+
+        #endregion
+
+        #region Private Functions
+
         // Prevents bad values
-        public static void posClamp(ref int pos, int strip)
+        private static void posClamp(ref int pos, int strip)
         {
             if (pos < 0)
                 pos = 0;
@@ -271,109 +261,73 @@ namespace DoubleRainbow
                 pos = Globals.ZenLength;
         }
 
-        // Diagnostics function to determine which strip is which by color
-        public static void reportStrip()
+        /*
+        *  Used to push LED changes to strip.
+        */
+        private static bool update(ColorTypes.RGB[] main, ColorTypes.RGB[] buffer, int length, int strip)
         {
-            clear(1);
-            clear(2);
-            KaiLight(0, new ColorTypes.RGB(127, 0, 0));
-            ZenLight(0, new ColorTypes.RGB(0, 127, 0));
-            display(1);
-            display(2);
+            bool hasChanged = false;
+            for (int i = 0; i < length; i++)
+            {
+                if (main[i].different(buffer[i]))
+                {
+                    hasChanged = true;
+                    sendClr(i, main[i], strip);
+                }
+            }
+            Array.Copy(main, buffer, length);
+            return hasChanged;
         }
 
-        #endregion
-
-        #region private functions
-
-        private static void copyToBuffer(int strip)
+        // Immediately updates the ardunio's buffer for the color
+        private static bool sendClr(int pos, ColorTypes.RGB rgb, int strip)
         {
-            if (strip == 1)
-            {
-                Array.Copy(_kai, _kaiBuffer, Globals.KaiLength);
-            }
-            else if (strip == 2)
-            {
-                Array.Copy(_zen, _zenBuffer, Globals.ZenLength);
-            }
-        }
+            posClamp(ref pos, 1);
 
-        public static void sendString(Byte[] array)
-        {
+            // Create color packet, add 64 for second led strip
+            byte[] bytes = new byte[4];
+            bytes[0] = (byte)pos;
+            if (strip == 2) bytes[0] += (byte)64;
+            bytes[1] = (byte)rgb.Red;
+            bytes[2] = (byte)rgb.Green;
+            bytes[3] = (byte)rgb.Blue;
+
             int bytesWritten = 0;
             ErrorCode ec = ErrorCode.None;
 
-            for(int i= 0 ; i< array.Length; i++)
-            {
-                Console.WriteLine(Convert.ToString(array[i], 2));
-            }
-
             if (Connected)
             {
-                ec = writer.Write(array, 2000, out bytesWritten);
+                ec = writer.Write(bytes, 2000, out bytesWritten);
             }
-
-            Console.WriteLine("Bytes written: " + bytesWritten);
-
             if (ec != ErrorCode.None)
             {
                 throw new Exception(UsbDevice.LastErrorString);
             }
+
+            return true;
         }
 
         // Sends Light up signal
         private static bool display(int strip)
         {
+            byte[] b = new byte[4];
+            b[0] = 128;
+            if (strip == 2) b[0] += (byte)64;
+            b[1] = 0;
+            b[2] = 0;
+            b[3] = 0;
+
             int bytesWritten;
             ErrorCode ec = ErrorCode.None;
             if (Connected)
             {
-                if (strip == 1)
-                {
-                    //Console.WriteLine("Kai Lit");
-                    ec = writer.Write(KaiOnByte(), 2000, out bytesWritten);
-                }
-                else if (strip == 2)
-                {
-                    //Console.WriteLine("Zen Lit");
-                    ec = writer.Write(ZenOnByte(), 2000, out bytesWritten);
-                }
+                ec = writer.Write(b, 2000, out bytesWritten);
             }
             if (ec != ErrorCode.None)
             {
                 throw new Exception(UsbDevice.LastErrorString);
             }
             return true;
-        }
-
-        private static byte[] KaiOnByte()
-        {
-            byte[] b = new byte[4];
-            b[0] = 128;
-            b[1] = 0;
-            b[2] = 0;
-            b[3] = 0;
-            return b;
-        }
-
-        private static byte[] ZenOnByte()
-        {
-            byte[] b = new byte[4];
-            b[0] = 128 + 64;
-            b[1] = 0;
-            b[2] = 0;
-            b[3] = 0;
-            return b;
-        }
-
-        public static void BuddySystem()
-        {
-            for (int i = 0; i < Globals.ZenLength; i++)
-            {
-                Zen[i] = Kai[i];
-            }
-            if(ZenUpdate())
-                ZenShow();
         }
 
         // Clears the leds
@@ -385,7 +339,7 @@ namespace DoubleRainbow
             {
                 for (int i = 0; i < Globals.KaiLength; i++)
                 {
-                    KaiLight(i, blank);
+                    sendClr(i, blank, 1);
                 }
                 display(1);
             }
@@ -393,7 +347,7 @@ namespace DoubleRainbow
             {
                 for (int i = 0; i < Globals.ZenLength; i++)
                 {
-                    ZenLight(i, blank);
+                    sendClr(i, blank, 2);
                 }
                 display(2);
             }

@@ -12,48 +12,10 @@ namespace DoubleRainbow
         public static Boolean flag = false;
         public static void Demo()
         {
-            Exemplar a = new Exemplar(1, Colors.Red, Colors.Red, 0, Globals.KaiLength);
-
-            Exemplar b = new Exemplar(1, Colors.Green, Colors.Green, 0, Globals.KaiLength);
-
-            int z = 0;
-            for(int j = 0; j < 2000; j++)
-            {
-                Rainbow.KaiLight(z, Colors.Red);
-                Rainbow.KaiLight(Globals.KaiLength-z, Colors.Green);
-                if(z == Globals.KaiLength-z)
-                {
-                    Rainbow.KaiLight(z, new ColorTypes.RGB(127,127,0));
-                }
-
-                Rainbow.KaiShow();
-
-                z++;
-                if(z>47)
-                    z = 0;
-            }
-
-            Rainbow.KaiShow();
 
         }
 
-        public static void Demo2(int sleep)
-        {
-            Rainbow.KaiLight(32, RandClr());
-            Rainbow.KaiShow();
-            Thread.Sleep(sleep);
-        }
 
-        public static void Basic()
-        {
-            Exemplar exem = new Exemplar(1, new ColorTypes.RGB(127,0,0), new ColorTypes.RGB(0,65,127), 0, Globals.KaiLength);
-            for (int i = 0; i < Globals.KaiLength; i++)
-            {
-                Rainbow.Kai[i] = exem.getRGBPos(i);
-            }
-            Rainbow.KaiUpdate();
-            Rainbow.KaiShow();
-        }
 
         public static Random rand = new Random();
         public static ColorTypes.RGB RandClr()
@@ -81,7 +43,7 @@ namespace DoubleRainbow
                 {
                     TestCompress(i, red, green, blue);
                 }
-                Rainbow.sendString(showByte());
+                Rainbow.KaiShow();
             }
         }
 
@@ -111,7 +73,7 @@ namespace DoubleRainbow
 
             //Console.WriteLine("Pos: " + pos + " byte: " + bytes[0]);
 
-            Rainbow.sendString(bytes);
+            //Rainbow.sendString(bytes);
         }
 
 

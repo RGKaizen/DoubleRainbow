@@ -17,9 +17,6 @@ namespace DoubleRainbow
         Random n = new Random();
 
         private const int NumThreads = 5;
-        private static ManualResetEvent[] resetEvents;
-
-        List<KeyEffect> KeyConfg;
 
         List<KeyEvt> KeyEvtList;
 
@@ -48,11 +45,12 @@ namespace DoubleRainbow
 
         }
 
-        EffectThread effect = null;
+      //  EffectThread effect = null;
         ColorTypes.RGB rgb = new ColorTypes.RGB(127, 0, 0);
-        int counter = 0;
+       // int counter = 0;
         private void Form1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
+            /*
             foreach (KeyEvt evt in KeyEvtList)
             {
 
@@ -76,6 +74,7 @@ namespace DoubleRainbow
                     }
                 }
             }
+             */
         }
 
         ColorTypes.RGB blank = new ColorTypes.RGB(0, 0, 0);
@@ -85,7 +84,7 @@ namespace DoubleRainbow
             {
                 if (e.KeyCode == evt.key)
                 {
-                    Rainbow.KaiLight(evt.pos, blank);
+                    //Rainbow.KaiLight(evt.pos, blank);
                     Rainbow.KaiShow();
                 }
             }
@@ -96,7 +95,7 @@ namespace DoubleRainbow
         {
             int index = (int)o;
 
-            resetEvents[index].Set();
+            //resetEvents[index].Set();
         }
     }
 
@@ -105,7 +104,6 @@ namespace DoubleRainbow
         public Keys key;
         public int pos;
         public ColorTypes.RGB color;
-        public Exemplar exp;
 
         public KeyEvt(String key_str, String pos_str, String color_str)
         {
@@ -117,7 +115,7 @@ namespace DoubleRainbow
             }
             catch (Exception e)
             {
-                Console.WriteLine("Failed to create KeyEvt ");
+                Console.WriteLine("Failed to create KeyEvt " + e);
             }
         }
 
@@ -130,11 +128,11 @@ namespace DoubleRainbow
                 ColorTypes.RGB from_color = StrToColor(from_clr);
                 ColorTypes.RGB to_color = StrToColor(to_clr);
                 key = ConvertFromString(ctrl_key_str.Substring(1));
-                exp = new Exemplar(1, from_color, to_color, from, to);
+                //exp = new Exemplar(1, from_color, to_color, from, to);
             }
             catch (Exception e)
             {
-                Console.WriteLine("Failed to create KeyEvt ");
+                Console.WriteLine("Failed to create KeyEvt " + e);
             }
         }
 
@@ -147,7 +145,7 @@ namespace DoubleRainbow
             }
             catch (Exception e)
             {
-                Console.WriteLine("Failed making color from string");
+                Console.WriteLine("Failed making color from string" + e);
             }
 
             return new ColorTypes.RGB(0, 0, 0);

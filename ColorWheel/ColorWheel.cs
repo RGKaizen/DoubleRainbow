@@ -186,7 +186,7 @@ namespace DoubleRainbow
         {
             // Given RGB values, calculate HSV and then update the screen.
             this._g = g;
-            this.HSV = ColorTypes.RGBtoHSV(RGB);
+            this.HSV = new ColorTypes.HSV(RGB);
             CalcCoordsAndUpdate(this.HSV);
             UpdateDisplay();
         }
@@ -255,8 +255,8 @@ namespace DoubleRainbow
                     }
                     newBrightnessPoint = new Point(brightnessX, newPoint.Y);
                     brightness = (int)((brightnessMax - newPoint.Y) * brightnessScaling);
-                    HSV.value = brightness;
-                    RGB = ColorTypes.HSVtoRGB(HSV);
+                    HSV.Value = brightness;
+                    RGB = new ColorTypes.RGB(HSV);
                     break;
 
                 case MouseState.ClickOnColor:
@@ -294,8 +294,8 @@ namespace DoubleRainbow
                     // Calculate the new HSV and RGB values.
                     HSV.Hue = (int)(degrees * 255 / 360);
                     HSV.Saturation = (int)(distance * 255);
-                    HSV.value = brightness;
-                    RGB = ColorTypes.HSVtoRGB(HSV);
+                    HSV.Value = brightness;
+                    RGB = new ColorTypes.RGB(HSV);
                     fullColor = ColorTypes.HSVtoColor(HSV.Hue, HSV.Saturation, 255);
                     break;
             }
@@ -380,12 +380,12 @@ namespace DoubleRainbow
 
             // Given the brightness (HSV.value), calculate the 
             // point corresponding to the brightness indicator.
-            brightnessPoint = CalcBrightnessPoint(HSV.value);
+            brightnessPoint = CalcBrightnessPoint(HSV.Value);
 
             // Store information about the selected color.
-            brightness = HSV.value;
+            brightness = HSV.Value;
             selectedColor = ColorTypes.HSVtoColor(HSV);
-            RGB = ColorTypes.HSVtoRGB(HSV);
+            RGB = new ColorTypes.RGB(HSV);
 
             // The full color is the same as HSV, except that the 
             // brightness is set to full (255). This is the top-most

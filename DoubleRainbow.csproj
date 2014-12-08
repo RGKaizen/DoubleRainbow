@@ -1,17 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E6A16532-396A-4D74-9277-4D9DDB85524D}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DoubleRainbow</RootNamespace>
     <AssemblyName>DoubleRainbow</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -23,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -32,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -69,14 +72,16 @@
     </Compile>
     <Compile Include="ColorTypes.cs" />
     <Compile Include="ColorWheel\ColorWheel.cs" />
-    <Compile Include="CPI\Enumerations.cs" />
+    <Compile Include="Effect.cs" />
     <Compile Include="EffectThread.cs" />
-    <Compile Include="Exemplar.cs" />
-    <Compile Include="CPI\GlobalSuppressions.cs" />
-    <Compile Include="CPI\Orientation3D.cs" />
-    <Compile Include="CPI\Plotter3D.cs" />
-    <Compile Include="CPI\Point3D.cs" />
     <Compile Include="Extred.cs" />
+    <Compile Include="MoodSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MoodSelector.Designer.cs">
+      <DependentUpon>MoodSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HueGenerator.cs" />
     <Compile Include="KeyEffect.cs" />
     <Compile Include="KeyMonitor.cs">
       <SubType>Form</SubType>
@@ -84,30 +89,29 @@
     <Compile Include="KeyMonitor.Designer.cs">
       <DependentUpon>KeyMonitor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Simple.cs">
+    <Compile Include="OptionMenu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Simple.Designer.cs">
-      <DependentUpon>Simple.cs</DependentUpon>
+    <Compile Include="OptionMenu.Designer.cs">
+      <DependentUpon>OptionMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Spiral.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Spiral.Designer.cs">
-      <DependentUpon>Spiral.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainWindow.cs">
+    <Compile Include="RainbowGenerator.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainWindow.Designer.cs">
-      <DependentUpon>MainWindow.cs</DependentUpon>
+    <Compile Include="RainbowGenerator.Designer.cs">
+      <DependentUpon>RainbowGenerator.cs</DependentUpon>
     </Compile>
     <Compile Include="Globals.cs" />
-    <Compile Include="CPI\MathUtil.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rainbow.cs" />
-    <Compile Include="Vector3D.cs" />
+    <Compile Include="MoodSeq.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MoodSeq.Designer.cs">
+      <DependentUpon>MoodSeq.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RainbowUtils.cs" />
     <Compile Include="Workshop.cs" />
     <EmbeddedResource Include="BPMCalc.resx">
       <DependentUpon>BPMCalc.cs</DependentUpon>
@@ -115,18 +119,17 @@
     <EmbeddedResource Include="ColorWheel\ColorChooser.resx">
       <DependentUpon>ColorChooser.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MoodSelector.resx">
+      <DependentUpon>MoodSelector.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="KeyMonitor.resx">
       <DependentUpon>KeyMonitor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Simple.resx">
-      <DependentUpon>Simple.cs</DependentUpon>
+    <EmbeddedResource Include="OptionMenu.resx">
+      <DependentUpon>OptionMenu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Spiral.resx">
-      <DependentUpon>Spiral.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainWindow.resx">
-      <DependentUpon>MainWindow.cs</DependentUpon>
+    <EmbeddedResource Include="RainbowGenerator.resx">
+      <DependentUpon>RainbowGenerator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -136,7 +139,12 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="MoodSeq.resx">
+      <DependentUpon>MoodSeq.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -149,7 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DR.ico" />
-    <Content Include="Rainbow-rainbows-4128014-1600-1200.ico" />
+    <Content Include="Rainnbow.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
