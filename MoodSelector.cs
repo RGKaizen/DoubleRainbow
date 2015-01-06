@@ -16,14 +16,17 @@ namespace DoubleRainbow
         public MoodSelector()
         {
             InitializeComponent();
+            _moodSeq.clearColors();
         }
 
+        // Choose Color
         private void button1_Click(object sender, EventArgs e)
         {
             _chooser = new ColorChooser();
             _chooser.Show();
         }
 
+        // Set Color
         private void button2_Click(object sender, EventArgs e)
         {
             if (_chooser == null) return;
@@ -32,6 +35,30 @@ namespace DoubleRainbow
 
             _moodSeq.addColor(clr);
             this.Invalidate();
+        }
+
+
+        // Animate Strip
+        AnimationThread _at = null;
+        private void button3_Click(object sender, EventArgs e)
+        {
+            _at = new AnimationThread(Animation);
+            _at.Start();
+
+        }
+
+        public void Animation()
+        {
+            foreach (ColorTypes.RGB rgb in _moodSeq.getColors())
+            {
+                RainbowUtils.fillBoth(rgb);
+            }
+        }
+
+        // Stop Animation
+        private void button4_Click(object sender, EventArgs e)
+        {
+            _at.Stop();
         }
 
 

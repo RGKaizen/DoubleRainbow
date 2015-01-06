@@ -58,6 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimationThread.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Blender.cs" />
     <Compile Include="BPMCalc.cs">
       <SubType>Form</SubType>

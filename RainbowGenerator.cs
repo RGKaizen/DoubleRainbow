@@ -23,48 +23,30 @@ namespace DoubleRainbow
 
     public partial class RainbowGenerator : Form
     {
-        Stopwatch s = new Stopwatch();
         const int KaiLength = Globals.KaiLength;
+        HueGenerator _huey = null;
+        AnimationThread _at = null;
 
         public RainbowGenerator()
         {
             InitializeComponent();
+            _huey = new HueGenerator(127.0f, 55.0f, 127.0f);
 
         }
 
-        // Play Action
-        private Boolean repeater(object sender, EventArgs e)
-        {
-            HueGenerator huey = new HueGenerator(127.0f, 55.0f, 127.0f);
-            s.Start();
-            while (isOn)
-            {
-                Animate(huey);
-            }
-            s.Stop();
-            return true;
-        }
-
-        public void Animate(HueGenerator huey)
+        public void Animate()
         {
 
             // Color Generation 
-            ColorTypes.HSV color_gen = huey.incrementCylinderSpace((float)Slider1Value/100, (float)Slider2Value/100, (float)Slider3Value/100);
+            ColorTypes.HSV color_gen = _huey.incrementCylinderSpace((float)Slider1Value/100, (float)Slider2Value/100, (float)Slider3Value/100);
             ColorTypes.RGB new_color = new ColorTypes.RGB(color_gen);
 
             // Position Generation
             Rainbow.Kai[23] = new_color;
             Rainbow.Kai[24] = new_color;
             Push();
-            
-            /*
-            for (int i = 0; i < Globals.KaiLength; i++)
-            {
-                Rainbow.Kai[i] = myRGB;
-            }
-             */
 
-            RefreshKai();
+            Rainbow.KaiShow();
             Rainbow.BuddySystem();
         }
 
@@ -81,62 +63,24 @@ namespace DoubleRainbow
             }
         }
 
-        // Use this to send commands to Kai!
-        public void RefreshKai()
-        {
-            if (Rainbow.KaiUpdate())
-                Rainbow.KaiShow();
-            Thread.Sleep(refreshRate);
-        }
-
-        // Use this to send commands to Zen!
-        public void RefreshZen()
-        {
-            if (Rainbow.ZenUpdate())
-                Rainbow.ZenShow();
-            Thread.Sleep(refreshRate);
-        }
-
         // Starts/stops repeat thread
-        Boolean isOn = false;
         private void PlayPause(object sender, EventArgs e)
         {
-            if (isOn)
+            if (_at.Stop())
             {
-                this.animWorker.CancelAsync();
                 this.button2.Text = "Play";
                 StoreState();
             }
 
-            if (!isOn && !this.animWorker.IsBusy)
+            if (_at.Start())
             {
                 this.button2.Text = "Pause";
-                this.animWorker.RunWorkerAsync(10);
             }
-
-            isOn = !isOn;
-
         }
 
         private void ClearButton(object sender, EventArgs e)
         {
             RainbowUtils.TurnOff();
-        }
-
-        private void animWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            // Do not access the form's BackgroundWorker reference directly. 
-            // Instead, use the reference provided by the sender parameter.
-            BackgroundWorker bw = sender as BackgroundWorker;
-            // Start the time-consuming operation.
-            e.Result = repeater(bw, e);
-
-            // If the operation was canceled by the user,  
-            // set the DoWorkEventArgs.Cancel property to true. 
-            if (bw.CancellationPending)
-            {
-                e.Cancel = true;
-            }
         }
 
         public double Slider1Value = 65;
@@ -165,17 +109,6 @@ namespace DoubleRainbow
         {
             refreshRate = RefreshBar.Value;
             refreshLbl.Text = refreshRate + " ms";
-            //DimLights(refreshRate);
-        }
-
-        private void DimLights(int val)
-        {
-            for(int i = 0; i < KaiLength; i++)
-            {
-                Rainbow.Kai[i] = AdjustVal(storedState[i], (val / (double)100));
-            }
-            RefreshKai();
-
         }
 
         ColorTypes.RGB[] storedState = new ColorTypes.RGB[KaiLength];

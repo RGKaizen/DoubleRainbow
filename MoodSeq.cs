@@ -29,8 +29,23 @@ namespace DoubleRainbow
 
         public void addColor(ColorTypes.RGB rgb)
         {
+            if (_color_list.Count == 10)
+            {
+                _color_list.RemoveAt(0);
+            }
             _color_list.Add(rgb);
             this.Invalidate();
+        }
+
+        public void clearColors()
+        {
+            _color_list.Clear();
+            this.Invalidate();
+        }
+
+        public List<ColorTypes.RGB> getColors()
+        {
+            return _color_list;
         }
 
         protected override void OnPaint(PaintEventArgs pe)
@@ -38,17 +53,23 @@ namespace DoubleRainbow
             // Call the OnPaint method of the base class.
             base.OnPaint(pe);
 
-            Graphics g = pe.Graphics;
-
-            Size rect_size = new Size(this.ClientSize.Width / _color_list.Count, this.ClientSize.Height);
-            int count = 0;
-            foreach (ColorTypes.RGB rgb in _color_list)
+            if(_color_list.Count !=0)
             {
-                Point p = new Point(count * rect_size.Width, 0);
-                SolidBrush myBrush = new SolidBrush(ColorTypes.RGBtoColor(rgb));
-                g.FillRectangle(myBrush, new Rectangle(p, rect_size));
-                myBrush.Dispose();             
-                count++;
+
+                Graphics g = pe.Graphics;
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+                Size rect_size = new Size(this.ClientSize.Width / _color_list.Count, this.ClientSize.Height);
+                int count = 0;
+                foreach (ColorTypes.RGB rgb in _color_list)
+                {
+                    Point p = new Point(count * rect_size.Width, 0);
+                    SolidBrush myBrush = new SolidBrush(ColorTypes.RGBtoColor(rgb));
+                    //g.FillRectangle(myBrush, new Rectangle(p, rect_size));
+                    g.FillEllipse(myBrush, new Rectangle(p, rect_size));
+                    myBrush.Dispose();             
+                    count++;
+                }
             }
         }
     }

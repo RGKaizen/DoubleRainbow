@@ -33,7 +33,6 @@ namespace DoubleRainbow
             this.tryButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.animWorker = new System.ComponentModel.BackgroundWorker();
             this.Slider1 = new System.Windows.Forms.HScrollBar();
             this.Slider1Lbl = new System.Windows.Forms.Label();
             this.Slider1ValueLbl = new System.Windows.Forms.Label();
@@ -85,11 +84,6 @@ namespace DoubleRainbow
             this.button2.Text = "PlayPause";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.PlayPause);
-            // 
-            // animWorker
-            // 
-            this.animWorker.WorkerSupportsCancellation = true;
-            this.animWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.animWorker_DoWork);
             // 
             // Slider1
             // 
@@ -243,7 +237,6 @@ namespace DoubleRainbow
         private System.Windows.Forms.Button tryButton;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.ComponentModel.BackgroundWorker animWorker;
         private System.Windows.Forms.HScrollBar Slider1;
         private System.Windows.Forms.Label Slider1Lbl;
         private System.Windows.Forms.Label Slider1ValueLbl;
