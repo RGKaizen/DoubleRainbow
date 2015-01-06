@@ -15,7 +15,7 @@ namespace DoubleRainbow
         public AnimationThread(ThreadFunction tf)
         {
             this.WorkerSupportsCancellation = true;
-            this.DoWork += new System.ComponentModel.DoWorkEventHandler(this.animWorker_DoWork);
+            this.DoWork += new System.ComponentModel.DoWorkEventHandler(this.this_DoWork);
             _tf = tf;
         }
 
@@ -40,7 +40,7 @@ namespace DoubleRainbow
             return !isOn;
         }
 
-        private void animWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void this_DoWork(object sender, DoWorkEventArgs e)
         {
             // Do not access the form's BackgroundWorker reference directly. 
             // Instead, use the reference provided by the sender parameter.

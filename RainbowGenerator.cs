@@ -31,7 +31,7 @@ namespace DoubleRainbow
         {
             InitializeComponent();
             _huey = new HueGenerator(127.0f, 55.0f, 127.0f);
-
+            _at = new AnimationThread(Animate);
         }
 
         public void Animate()
