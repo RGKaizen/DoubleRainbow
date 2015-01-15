@@ -45,14 +45,22 @@ namespace DoubleRainbow
             Rainbow.Kai[23] = new_color;
             Rainbow.Kai[24] = new_color;
             Push();
-
-            Rainbow.KaiShow();
-            Rainbow.BuddySystem();
+            RainbowUtils.update();
         }
 
         // Pushes from the center like this <-- -->
         public void Push()
         {
+            double mid = 23.5;
+            for (int i = 0; i < 23; i++)
+            {
+                int wave_up = (int)(Math.Ceiling(mid + i));
+                int wave_down = (int)(Math.Floor(mid - i));
+                Rainbow.Kai[wave_up] = Rainbow.Kai[wave_up - 1];
+                Rainbow.Kai[wave_down] = Rainbow.Kai[wave_down + 1];
+            }
+
+            /*
             for (int i = 0; i < 23; i++)
             {
                 Rainbow.Kai[i] = Rainbow.Kai[i + 1];
@@ -61,20 +69,22 @@ namespace DoubleRainbow
             {
                 Rainbow.Kai[i] = Rainbow.Kai[i - 1];
             }
+             */
         }
 
         // Starts/stops repeat thread
         private void PlayPause(object sender, EventArgs e)
         {
-            if (_at.Stop())
+            if (_at.isOn)
             {
                 this.button2.Text = "Play";
-                StoreState();
+                _at.Stop();
             }
-
-            if (_at.Start())
+            else
             {
                 this.button2.Text = "Pause";
+                _at.Start();
+                StoreState();
             }
         }
 

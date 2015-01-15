@@ -65,7 +65,6 @@ namespace DoubleRainbow
                 {
                     Point p = new Point(count * rect_size.Width, 0);
                     SolidBrush myBrush = new SolidBrush(ColorTypes.RGBtoColor(rgb));
-                    //g.FillRectangle(myBrush, new Rectangle(p, rect_size));
                     g.FillEllipse(myBrush, new Rectangle(p, rect_size));
                     myBrush.Dispose();             
                     count++;

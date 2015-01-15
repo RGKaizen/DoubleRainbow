@@ -9,7 +9,7 @@ namespace DoubleRainbow
 {
     class AnimationThread : BackgroundWorker
     {
-        Boolean isOn = false;
+        public Boolean isOn { get; private set; }
         public delegate void ThreadFunction();
         ThreadFunction _tf = null;
         public AnimationThread(ThreadFunction tf)
@@ -45,8 +45,6 @@ namespace DoubleRainbow
             // Do not access the form's BackgroundWorker reference directly. 
             // Instead, use the reference provided by the sender parameter.
             BackgroundWorker bw = sender as BackgroundWorker;
-
-            // Start the time-consuming operation.
             while (isOn)
             {
                 _tf();

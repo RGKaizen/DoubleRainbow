@@ -16,12 +16,18 @@ namespace DoubleRainbow
             {
                 Rainbow.KaiSet(i, rgb);
             }
+            update();
+        }
+
+        public static void update()
+        {
             if (Rainbow.KaiUpdate())
             {
                 Rainbow.KaiShow();
             }
             Rainbow.BuddySystem();
         }
+
 
         public static void TurnOff()
         {

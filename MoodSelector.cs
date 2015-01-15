@@ -17,6 +17,7 @@ namespace DoubleRainbow
         {
             InitializeComponent();
             _moodSeq.clearColors();
+            _at = new AnimationThread(Animation);
         }
 
         // Choose Color
@@ -40,12 +41,21 @@ namespace DoubleRainbow
 
         // Animate Strip
         AnimationThread _at = null;
-        private void button3_Click(object sender, EventArgs e)
+        // Starts/stops repeat thread
+        private void PlayPause(object sender, EventArgs e)
         {
-            _at = new AnimationThread(Animation);
-            _at.Start();
-
+            if (_at.isOn)
+            {
+                this.button2.Text = "Play";
+                _at.Stop();
+            }
+            else
+            {
+                this.button2.Text = "Pause";
+                _at.Start();
+            }
         }
+    
 
         public void Animation()
         {
@@ -58,7 +68,10 @@ namespace DoubleRainbow
         // Stop Animation
         private void button4_Click(object sender, EventArgs e)
         {
-            _at.Stop();
+            if (!_at.Stop())
+            {
+                MessageBox.Show("I failed to stop it...");
+            }
         }
 
 
