@@ -335,6 +335,8 @@ namespace ColorChooserCSharp
 
 		private void ColorChooser_Load(object sender, System.EventArgs e)
 		{
+            ColorTypes.HSV default_color = new ColorTypes.HSV(127, 256, 82);
+
 			// Turn on double-buffering, so the form looks better. 
 			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 			this.SetStyle(ControlStyles.UserPaint, true);
@@ -357,13 +359,13 @@ namespace ColorChooserCSharp
 			// Create the new ColorWheel class, indicating
 			// the locations of the color wheel itself, the
 			// brightness area, and the position of the selected color.
-			myColorWheel = new ColorWheel(ColorRectangle, BrightnessRectangle, SelectedColorRectangle);
+            myColorWheel = new ColorWheel(ColorRectangle, BrightnessRectangle, SelectedColorRectangle, default_color);
 			myColorWheel.ColorChanged += new ColorWheel.ColorChangedEventHandler(this.colorWheel_Changed);
 
 			// Set the RGB and HSV values 
 			// of the NumericUpDown controls.
-            SetRGB(new ColorTypes.RGB(127, 0, 0));
-			SetHSV(new ColorTypes.HSV(127, 0, 0));		
+            SetRGB(new ColorTypes.RGB(default_color));
+            SetHSV(default_color);		
 		}
 
 		private void HandleMouse(object sender,  MouseEventArgs e)
@@ -420,7 +422,7 @@ namespace ColorChooserCSharp
 			RefreshValue(hsbSaturation, HSV.Saturation);
 			RefreshValue(hsbBrightness, HSV.Value);
 			SetHSVLabels(HSV);
-			}
+		}
 
 		private void RefreshValue(HScrollBar hsb, int value) 
 		{

@@ -46,6 +46,10 @@
     <Reference Include="LibUsbDotNet">
       <HintPath>C:\Program Files\LibUsbDotNet\LibUsbDotNet.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -58,40 +62,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnimationThread.cs">
+    <Compile Include="MoodSelector\MoodSeq.cs" />
+    <Compile Include="Utils\AnimationThread.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Blender.cs" />
-    <Compile Include="BPMCalc.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BPMCalc.Designer.cs">
-      <DependentUpon>BPMCalc.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Colors.cs" />
+    <Compile Include="Utils\Blender.cs" />
+    <Compile Include="Utils\Colors.cs" />
     <Compile Include="ColorWheel\ColorChangedEventArgs.cs" />
     <Compile Include="ColorWheel\ColorChooser.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ColorTypes.cs" />
+    <Compile Include="Utils\ColorTypes.cs" />
     <Compile Include="ColorWheel\ColorWheel.cs" />
-    <Compile Include="Effect.cs" />
-    <Compile Include="EffectThread.cs" />
-    <Compile Include="Extred.cs" />
-    <Compile Include="MoodSelector.cs">
+    <Compile Include="MoodSelector\DlgNameChooser.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MoodSelector.Designer.cs">
+    <Compile Include="MoodSelector\MoodSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MoodSelector\MoodSelector.Designer.cs">
       <DependentUpon>MoodSelector.cs</DependentUpon>
     </Compile>
-    <Compile Include="HueGenerator.cs" />
-    <Compile Include="KeyEffect.cs" />
-    <Compile Include="KeyMonitor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="KeyMonitor.Designer.cs">
-      <DependentUpon>KeyMonitor.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Utils\HueGenerator.cs" />
     <Compile Include="OptionMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,29 +96,26 @@
     <Compile Include="RainbowGenerator.Designer.cs">
       <DependentUpon>RainbowGenerator.cs</DependentUpon>
     </Compile>
-    <Compile Include="Globals.cs" />
+    <Compile Include="Utils\Globals.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rainbow.cs" />
-    <Compile Include="MoodSeq.cs">
+    <Compile Include="MoodSelector\MoodSeqUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MoodSeq.Designer.cs">
-      <DependentUpon>MoodSeq.cs</DependentUpon>
+    <Compile Include="MoodSelector\MoodSeqUI.Designer.cs">
+      <DependentUpon>MoodSeqUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="RainbowUtils.cs" />
+    <Compile Include="Utils\RainbowUtils.cs" />
     <Compile Include="Workshop.cs" />
-    <EmbeddedResource Include="BPMCalc.resx">
-      <DependentUpon>BPMCalc.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ColorWheel\ColorChooser.resx">
       <DependentUpon>ColorChooser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MoodSelector.resx">
-      <DependentUpon>MoodSelector.cs</DependentUpon>
+    <EmbeddedResource Include="MoodSelector\DlgNameChooser.resx">
+      <DependentUpon>DlgNameChooser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="KeyMonitor.resx">
-      <DependentUpon>KeyMonitor.cs</DependentUpon>
+    <EmbeddedResource Include="MoodSelector\MoodSelector.resx">
+      <DependentUpon>MoodSelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OptionMenu.resx">
       <DependentUpon>OptionMenu.cs</DependentUpon>
@@ -144,10 +133,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="MoodSeq.resx">
-      <DependentUpon>MoodSeq.cs</DependentUpon>
+    <EmbeddedResource Include="MoodSelector\MoodSeqUI.resx">
+      <DependentUpon>MoodSeqUI.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

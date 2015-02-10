@@ -26,6 +26,11 @@ namespace DoubleRainbow
                 isOn = true;
             }
 
+            if (this.IsBusy)
+            { 
+                return true;
+            }
+
             return isOn;
         }
 

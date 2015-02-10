@@ -9,59 +9,50 @@ using System.Windows.Forms;
 
 namespace DoubleRainbow
 {
-    public partial class MoodSeq : UserControl
+    public partial class MoodSeqUI : UserControl
     {
+        public MoodSeq _moodSeq;
 
-        private List<ColorTypes.RGB> _color_list = new List<ColorTypes.RGB>();
-
-        public MoodSeq()
+        public MoodSeqUI()
         {
-            InitializeComponent();
-            _color_list.Add(Colors.Red);
-            _color_list.Add(Colors.Green);
-        }
-
-        public MoodSeq(ColorTypes.RGB rgb)
-        {
-            InitializeComponent();
-            _color_list.Add(rgb);
-        }
-
-        public void addColor(ColorTypes.RGB rgb)
-        {
-            if (_color_list.Count == 10)
-            {
-                _color_list.RemoveAt(0);
-            }
-            _color_list.Add(rgb);
-            this.Invalidate();
+            _moodSeq = new MoodSeq();
         }
 
         public void clearColors()
         {
-            _color_list.Clear();
+            _moodSeq.Color_List.Clear();
             this.Invalidate();
         }
 
         public List<ColorTypes.RGB> getColors()
         {
-            return _color_list;
+            return _moodSeq.Color_List;
         }
+
+        public void addColor(ColorTypes.RGB rgb)
+        {
+            if (_moodSeq.Color_List.Count == 10)
+            {
+                _moodSeq.Color_List.RemoveAt(0);
+            }
+            _moodSeq.Color_List.Add(rgb);
+        }
+
 
         protected override void OnPaint(PaintEventArgs pe)
         {
             // Call the OnPaint method of the base class.
             base.OnPaint(pe);
 
-            if(_color_list.Count !=0)
+            if (_moodSeq.Color_List.Count != 0)
             {
 
                 Graphics g = pe.Graphics;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-                Size rect_size = new Size(this.ClientSize.Width / _color_list.Count, this.ClientSize.Height);
+                Size rect_size = new Size(this.ClientSize.Width / _moodSeq.Color_List.Count, this.ClientSize.Height);
                 int count = 0;
-                foreach (ColorTypes.RGB rgb in _color_list)
+                foreach (ColorTypes.RGB rgb in _moodSeq.Color_List)
                 {
                     Point p = new Point(count * rect_size.Width, 0);
                     SolidBrush myBrush = new SolidBrush(ColorTypes.RGBtoColor(rgb));

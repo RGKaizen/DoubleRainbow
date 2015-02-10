@@ -17,13 +17,7 @@ namespace DoubleRainbow
     {
         #region USB Communications
         private static UsbDevice MyUsbDevice;
-
-        #region SET YOUR USB Vendor and Product ID!
-
         private static UsbDeviceFinder MyUsbFinder = new UsbDeviceFinder(9025, 32822);
-
-        #endregion
-
         private static UsbEndpointWriter writer = null;
 
         public static bool Connect()
@@ -194,7 +188,7 @@ namespace DoubleRainbow
             _zen[pos] = rgb;
         }
 
-        // Displays Arduino Buffer to reality
+        // Tells LED Strip to actually show the colors set
         public static bool KaiShow()
         {
             if (KaiEnabled)
@@ -299,6 +293,11 @@ namespace DoubleRainbow
             {
                 ec = writer.Write(bytes, 2000, out bytesWritten);
             }
+            if(ec == ErrorCode.ResourceBusy)
+            {
+                return true;
+            }
+
             if (ec != ErrorCode.None)
             {
                 throw new Exception(UsbDevice.LastErrorString);
@@ -322,6 +321,10 @@ namespace DoubleRainbow
             if (Connected)
             {
                 ec = writer.Write(b, 2000, out bytesWritten);
+            }
+            if (ec == ErrorCode.ResourceBusy)
+            {
+                return true;
             }
             if (ec != ErrorCode.None)
             {

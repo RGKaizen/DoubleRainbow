@@ -1,6 +1,6 @@
 ﻿namespace DoubleRainbow
 {
-    partial class MoodSeq
+    partial class MoodSeqUI
     {
         /// <summary> 
         /// Required designer variable.
@@ -36,7 +36,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.DoubleBuffered = true;
-            this.Name = "MoodSeq";
             this.Size = new System.Drawing.Size(180, 30);
             this.ResumeLayout(false);
 

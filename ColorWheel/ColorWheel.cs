@@ -76,7 +76,7 @@ namespace DoubleRainbow
         private int brightnessMin;
         private int brightnessMax;
 
-        public ColorWheel(Rectangle colorRectangle, Rectangle brightnessRectangle, Rectangle selectedColorRectangle)
+        public ColorWheel(Rectangle colorRectangle, Rectangle brightnessRectangle, Rectangle selectedColorRectangle, ColorTypes.HSV default_color)
         {
 
             // Caller must provide locations for color wheel
@@ -136,6 +136,8 @@ namespace DoubleRainbow
 
                 // Create the bitmap that contains the circular gradient.
                 CreateGradient();
+
+                CalcCoordsAndUpdate(default_color);
             }
         }
 
