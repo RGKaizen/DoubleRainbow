@@ -11,31 +11,43 @@ namespace DoubleRainbow
 {
     public partial class MoodSeqUI : UserControl
     {
-        public MoodSeq _moodSeq;
+        private MoodSeq mood;   // the name field
+        public MoodSeq Mood   // the Name property
+        {
+            get
+            {
+                return mood;
+            }
+            set
+            {
+                mood = value;
+                this.Invalidate();
+            }
+        }
 
         public MoodSeqUI()
         {
-            _moodSeq = new MoodSeq();
+            mood = new MoodSeq();
         }
 
         public void clearColors()
         {
-            _moodSeq.Color_List.Clear();
+            mood.Color_List.Clear();
             this.Invalidate();
         }
 
         public List<ColorTypes.RGB> getColors()
         {
-            return _moodSeq.Color_List;
+            return mood.Color_List;
         }
 
         public void addColor(ColorTypes.RGB rgb)
         {
-            if (_moodSeq.Color_List.Count == 10)
+            if (mood.Color_List.Count == 10)
             {
-                _moodSeq.Color_List.RemoveAt(0);
+                mood.Color_List.RemoveAt(0);
             }
-            _moodSeq.Color_List.Add(rgb);
+            mood.Color_List.Add(rgb);
         }
 
 
@@ -44,15 +56,15 @@ namespace DoubleRainbow
             // Call the OnPaint method of the base class.
             base.OnPaint(pe);
 
-            if (_moodSeq.Color_List.Count != 0)
+            if (mood.Color_List.Count != 0)
             {
 
                 Graphics g = pe.Graphics;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-                Size rect_size = new Size(this.ClientSize.Width / _moodSeq.Color_List.Count, this.ClientSize.Height);
+                Size rect_size = new Size(this.ClientSize.Width / mood.Color_List.Count, this.ClientSize.Height);
                 int count = 0;
-                foreach (ColorTypes.RGB rgb in _moodSeq.Color_List)
+                foreach (ColorTypes.RGB rgb in mood.Color_List)
                 {
                     Point p = new Point(count * rect_size.Width, 0);
                     SolidBrush myBrush = new SolidBrush(ColorTypes.RGBtoColor(rgb));
