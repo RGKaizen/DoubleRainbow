@@ -12,7 +12,42 @@ namespace DoubleRainbow
         public static Boolean flag = false;
         public static void Demo()
         {
+            ColorTypes.RGB red = new ColorTypes.RGB(127,0,0);
+            ColorTypes.RGB green = new ColorTypes.RGB(0, 0, 127);
 
+            ColorTypes.RGB proper = Blender.ProperMix(red, green, 0.5);
+            ColorTypes.RGB magic = Blender.variableMix(red, green, 0.5);
+
+            for(int i = 0; i < Globals.ZenLength; i++)
+            {
+                if (i < 5)
+                {
+                    Rainbow.Zen[i] = red;
+                }
+                else if ( i >= 5 && i < 10)
+                {
+                    Rainbow.Zen[i] = proper;
+                }
+                else if (i >= 10 && i < 15)
+                {
+                    Rainbow.Zen[i] = green;
+                }
+                else if (i >= 20 && i < 25)
+                {
+                    Rainbow.Zen[i] = green;
+                }
+                else if (i >= 25 && i < 30)
+                {
+                    Rainbow.Zen[i] = magic;
+                }
+                else if (i >= 30 && i < 32)
+                {
+                    Rainbow.Zen[i] = red;
+                }
+            }
+
+            Rainbow.ZenUpdate();
+            Rainbow.ZenShow();
         }
 
 

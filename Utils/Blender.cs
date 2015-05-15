@@ -14,16 +14,7 @@ namespace DoubleRainbow
 
         public static ColorTypes.RGB addHighest(ColorTypes.RGB a, ColorTypes.RGB b)
         {
-            int red = b.Red;
-            if (a.Red > b.Red)
-                red = a.Red;
-            int green = b.Green;
-            if (a.Green > b.Green)
-                green = a.Green;
-            int blue = b.Blue;
-            if (a.Blue > b.Blue)
-                blue = a.Blue;
-            return new ColorTypes.RGB(red, green, blue);
+            return new ColorTypes.RGB(Math.Max(b.Red, a.Red), Math.Max(b.Green, a.Green), Math.Max(b.Blue, a.Blue));
         }
 
         // a * perc + b * (1- perc)
@@ -32,28 +23,33 @@ namespace DoubleRainbow
             return new ColorTypes.RGB((int)(a.Red * perc + b.Red * (1 - perc)), (int)(a.Green * perc + b.Green * (1 - perc)), (int)(a.Blue * perc + b.Blue * (1 - perc)));
         }
 
-        public static ColorTypes.RGB[] MagicMix(ColorTypes.RGB[] a, ColorTypes.RGB[] b, double ratio)
+        public static ColorTypes.RGB MagicMix(ColorTypes.RGB a, ColorTypes.RGB b, double ratio)
         {
-            int length = a.Length;
-            // Populates buffer 1 by 1
+            ColorTypes.RGB result = new ColorTypes.RGB();
+            int redDistance = (b.Red - a.Red);
+            int greenDistance = (b.Green - a.Green);
+            int blueDistance = (b.Blue - a.Blue);
 
-            ColorTypes.RGB[] result = new ColorTypes.RGB[length];
-            for (int i = 0; i < length; i++)
-            {
+            result.Red = (int)(a.Red + redDistance * ratio);
+            result.Green = (int)(a.Green + greenDistance * ratio);
+            result.Blue = (int)(a.Blue + blueDistance * ratio);
 
-                // Calcualte difference from points
-                int redDistance = (b[i].Red - a[i].Red);
-                int greenDistance = (b[i].Green - a[i].Green);
-                int blueDistance = (b[i].Blue - a[i].Blue);
-
-                ColorTypes.RGB temp = new ColorTypes.RGB();
-                temp.Red = (int)(a[i].Red + redDistance * ratio);
-                temp.Green = (int)(a[i].Green + greenDistance * ratio);
-                temp.Blue = (int)(a[i].Blue + blueDistance * ratio);
-                result[i] = temp;
-            }
             return result;      
         }
 
+        public static ColorTypes.RGB ProperMix(ColorTypes.RGB a, ColorTypes.RGB b, double ratio)
+        {
+
+            ColorTypes.RGB result = new ColorTypes.RGB();
+            result.Red = properMixAlgo(b.Red, a.Red);
+            result.Green = properMixAlgo(b.Green, a.Green);
+            result.Blue = properMixAlgo(b.Blue, a.Blue);
+            return result;
+        }
+
+        private static int properMixAlgo(int color1, int color2)
+        {
+            return (int)( Math.Sqrt( ( Math.Pow(color1, 2) + Math.Pow(color2, 2) ) / 2) );
+        }
     }
 }

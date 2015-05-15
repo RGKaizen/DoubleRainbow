@@ -17,6 +17,9 @@ namespace DoubleRainbow
     {
         ColorChooser _chooser;
         BindingList<MoodSeq> moods_list;
+        private MoodSeqUI current_moodSeqUI;
+        private MoodSeq currentMood;
+
         public MoodSelector()
         {
             InitializeComponent();
@@ -27,42 +30,24 @@ namespace DoubleRainbow
             else
                 moods_list = new BindingList<MoodSeq>();
 
+            // How to bind a list to a combobox bidirectionally
             moodsBindingSource.DataSource = moods_list;
             moodsCmbBox.DataSource = moodsBindingSource.DataSource;
             moodsCmbBox.SelectedIndex = -1;
         }
 
-        // Serialize list on close
-        private void MoodSelector_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            List<MoodSeq> json_list = new List<MoodSeq>();
-            foreach (MoodSeq moodSeq in moodsCmbBox.Items)
-            {
-                json_list.Add(moodSeq);
-            }
-
-            JsonSerializer serializer = new JsonSerializer();
-            using (StreamWriter sw = new StreamWriter(@"moods.txt"))
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                serializer.Serialize(writer, json_list);
-            }
-        }
-
-        private MoodSeqUI moodSeqUI_obj;
-        private MoodSeq currentMood;
         private void InitMoodSeq()
         {
-            this.moodSeqUI_obj = new DoubleRainbow.MoodSeqUI();
-            this.moodSeqUI_obj.BackColor = System.Drawing.Color.White;
-            this.moodSeqUI_obj.Location = new System.Drawing.Point(12, 50);
-            this.moodSeqUI_obj.Name = "_moodSeq";
-            this.moodSeqUI_obj.Size = new System.Drawing.Size(260, 26);
-            this.moodSeqUI_obj.TabIndex = 2;
-            this.Controls.Add(this.moodSeqUI_obj);
-            moodSeqUI_obj.clearColors();
+            this.current_moodSeqUI = new DoubleRainbow.MoodSeqUI();
+            this.current_moodSeqUI.BackColor = System.Drawing.Color.White;
+            this.current_moodSeqUI.Location = new System.Drawing.Point(12, 50);
+            this.current_moodSeqUI.Name = "_moodSeq";
+            this.current_moodSeqUI.Size = new System.Drawing.Size(260, 26);
+            this.current_moodSeqUI.TabIndex = 2;
+            this.Controls.Add(this.current_moodSeqUI);
+            current_moodSeqUI.clearColors();
             currentMood = new MoodSeq();
-            this.moodSeqUI_obj.Mood = currentMood;
+            this.current_moodSeqUI.Mood = currentMood;
         }
 
         // Choose Color
@@ -83,7 +68,7 @@ namespace DoubleRainbow
             if (clr == null) return;
 
             currentMood.Color_List.Add(clr);
-            moodSeqUI_obj.Mood = currentMood;
+            current_moodSeqUI.Mood = currentMood;
             this.Invalidate();
         }
 
@@ -106,7 +91,7 @@ namespace DoubleRainbow
                 currentMood.Name = dlg.name;
             else
                 return;
-            moodSeqUI_obj.Mood = currentMood;
+            current_moodSeqUI.Mood = currentMood;
             moodNameLbl.Text = "Mood Name: " + currentMood.Name;
 
         }
@@ -116,8 +101,8 @@ namespace DoubleRainbow
             if (moodsCmbBox.SelectedItem != null)
             {
                 currentMood = (MoodSeq)moodsCmbBox.SelectedItem;
-                moodSeqUI_obj.Mood = currentMood;
-                moodSeqUI_obj.Invalidate();
+                current_moodSeqUI.Mood = currentMood;
+                current_moodSeqUI.Invalidate();
                 this.Invalidate();
             }
         }
@@ -147,16 +132,14 @@ namespace DoubleRainbow
         Boolean halt = false;
         public void Animation()
         {
-            List<ColorTypes.RGB> color_list = moodSeqUI_obj.getColors();
+            List<ColorTypes.RGB> color_list = current_moodSeqUI.getColors();
             for (int i = 0; i < color_list.Count; i++)
             {
-                ColorTypes.RGB cur = color_list[i];
-                ColorTypes.RGB next;
-                if (i + 1 == color_list.Count)
-                    next = color_list[0];
-                else
-                    next = color_list[i + 1];
 
+                ColorTypes.RGB cur = color_list[i];
+                ColorTypes.RGB next = color_list[(i+1)%color_list.Count];
+
+                // Smoothening effect
                 double j = 1.0;
                 while (j > 0.0)
                 {
@@ -171,7 +154,25 @@ namespace DoubleRainbow
         }
         #endregion
 
+        // Serialize list on close
+        private void MoodSelector_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
 
+            // Generate a list of the current mood combobox state
+            List<MoodSeq> json_list = new List<MoodSeq>();
+            foreach (MoodSeq moodSeq in moodsCmbBox.Items)
+            {
+                json_list.Add(moodSeq);
+            }
+
+            // Serialize the list
+            JsonSerializer serializer = new JsonSerializer();
+            using (StreamWriter sw = new StreamWriter(@"moods.txt"))
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                serializer.Serialize(writer, json_list);
+            }
+        }
 
     }
 }

@@ -60,5 +60,10 @@ namespace DoubleRainbow
                 Rainbow.ZenEnabled = true;
             }
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Workshop.Demo();
+        }
     }
 }

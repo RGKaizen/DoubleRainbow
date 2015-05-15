@@ -38,7 +38,7 @@ namespace DoubleRainbow
         {
 
             // Color Generation 
-            ColorTypes.HSV color_gen = _huey.incrementCylinderSpace((float)Slider1Value/100, (float)Slider2Value/100, (float)Slider3Value/100);
+            ColorTypes.HSV color_gen = _huey.incrementCylinderSpace((float)Slider1Value, (float)Slider2Value, (float)Slider3Value);
             ColorTypes.RGB new_color = new ColorTypes.RGB(color_gen);
 
             // Position Generation
@@ -46,6 +46,7 @@ namespace DoubleRainbow
             Rainbow.Kai[24] = new_color;
             Push();
             RainbowUtils.update();
+            Thread.Sleep(refreshRate);
         }
 
         // Pushes from the center like this <-- -->
@@ -54,22 +55,12 @@ namespace DoubleRainbow
             double mid = 23.5;
             for (int i = 0; i < 23; i++)
             {
-                int wave_up = (int)(Math.Ceiling(mid + i));
-                int wave_down = (int)(Math.Floor(mid - i));
-                Rainbow.Kai[wave_up] = Rainbow.Kai[wave_up - 1];
-                Rainbow.Kai[wave_down] = Rainbow.Kai[wave_down + 1];
+                int wave_up = 0+i;//(int)(Math.Ceiling(mid + i));
+                int wave_down = 46-i;//(int)(Math.Floor(mid - i));
+                Rainbow.Kai[wave_up] = Rainbow.Kai[wave_up + 1];
+                Rainbow.Kai[wave_down] = Rainbow.Kai[wave_down - 1];
+               // RainbowUtils.update();
             }
-
-            /*
-            for (int i = 0; i < 23; i++)
-            {
-                Rainbow.Kai[i] = Rainbow.Kai[i + 1];
-            }
-            for (int i = 47; i > 24; i--)
-            {
-                Rainbow.Kai[i] = Rainbow.Kai[i - 1];
-            }
-             */
         }
 
         // Starts/stops repeat thread
@@ -93,25 +84,25 @@ namespace DoubleRainbow
             RainbowUtils.TurnOff();
         }
 
-        public double Slider1Value = 65;
+        public double Slider1Value = 61;
         private void Slider1_Scroll(object sender, ScrollEventArgs e)
         {
-            Slider1Value = Slider1.Value;
-            Slider1ValueLbl.Text = "Val: " + Slider1Value;
+            Slider1Value = Math.Pow(Math.E, (5.545d * Slider1.Value / 1000) );
+            Slider1ValueLbl.Text = "Val: " + String.Format("{0:N2}", Slider1Value);
         }
 
         public double Slider2Value = 45;
         private void Slider2_Scroll(object sender, ScrollEventArgs e)
         {
-            Slider2Value = Slider2.Value;
-            Slider2ValueLbl.Text = "Val: " + Slider2Value;
+            Slider2Value = Math.Pow(Math.E, (5.545d * Slider2.Value / 1000) );
+            Slider2ValueLbl.Text = "Val: " + String.Format("{0:N2}", Slider2Value);
         }
 
         public double Slider3Value = 34;
         private void Slider3_Scroll(object sender, ScrollEventArgs e)
         {
-            Slider3Value = Slider3.Value;
-            Slider3ValueLbl.Text = "Val: " + Slider3Value;
+            Slider3Value = Math.Pow(Math.E, (5.545d * Slider3.Value / 1000));
+            Slider3ValueLbl.Text = "Val: " + String.Format("{0:N2}", Slider3Value);
         }
 
         public int refreshRate = 0;

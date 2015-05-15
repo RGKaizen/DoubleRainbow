@@ -35,5 +35,12 @@ namespace DoubleRainbow
             Rainbow.ZenClear();
         }
 
+        public static ColorTypes.RGB increaseBrightness(ColorTypes.RGB rgb, int amt)
+        {
+            ColorTypes.HSV hsv = new ColorTypes.HSV(rgb);
+            hsv.Value = hsv.Value + amt > 256 ? 256 : hsv.Value + amt;
+            return new ColorTypes.RGB(hsv);
+        }
+
     }
 }

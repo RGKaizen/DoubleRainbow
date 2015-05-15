@@ -67,7 +67,7 @@ namespace DoubleRainbow
                 foreach (ColorTypes.RGB rgb in mood.Color_List)
                 {
                     Point p = new Point(count * rect_size.Width, 0);
-                    SolidBrush myBrush = new SolidBrush(ColorTypes.RGBtoColor(rgb));
+                    SolidBrush myBrush = new SolidBrush(ColorTypes.RGBtoColor(RainbowUtils.increaseBrightness(rgb, 130)));
                     g.FillEllipse(myBrush, new Rectangle(p, rect_size));
                     myBrush.Dispose();             
                     count++;
