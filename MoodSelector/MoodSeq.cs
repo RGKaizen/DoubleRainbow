@@ -13,13 +13,13 @@ namespace DoubleRainbow
         public String Name = " ";
 
         [JsonProperty]
-        public List<ColorTypes.RGB> Color_List = new List<ColorTypes.RGB>();
+        public List<DRColor.RGB> Color_List = new List<DRColor.RGB>();
 
         public MoodSeq()
         {
         }
 
-        public MoodSeq(ColorTypes.RGB rgb)
+        public MoodSeq(DRColor.RGB rgb)
         {
             Color_List.Add(rgb);
 

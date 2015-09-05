@@ -13,7 +13,7 @@ namespace DoubleRainbow
 
         // Functions
         public static Random n = new Random();
-        public static ColorTypes.RGB randomRGB()
+        public static DRColor.RGB randomRGB()
         {
 
             int r = n.Next(127);
@@ -28,7 +28,7 @@ namespace DoubleRainbow
                 g /= 3;
             }
 
-            return new ColorTypes.RGB(r / 4, g / 4, b / 4);
+            return new DRColor.RGB(r / 4, g / 4, b / 4);
         }
     }
 }

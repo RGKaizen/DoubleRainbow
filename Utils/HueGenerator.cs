@@ -1,11 +1,12 @@
-﻿using System;
+﻿using DoubleRainbow.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace DoubleRainbow
 {
-    public class HueGenerator
+    public class HueGenerator : IHueGenerator
     {
         // Functions
         private float hue;
@@ -42,7 +43,7 @@ namespace DoubleRainbow
         /// <param name="sat_delta"></param>
         /// <param name="value_delta"></param>
         /// <returns></returns>
-        public ColorTypes.HSV incrementCylinderSpace(float hue_delta, float sat_delta, float value_delta)
+        public DRColor.HSV getNextColor(float hue_delta, float sat_delta, float value_delta)
         {
 
             // Add or subtract delta based on flag state
@@ -60,7 +61,7 @@ namespace DoubleRainbow
             // Angle to 8 bit
             float hue_value = hue * 256 / 360;
 
-            return new ColorTypes.HSV((int)hue_value, (int)saturation, (int)value);
+            return new DRColor.HSV((int)hue_value, (int)saturation, (int)value);
         }
 
         /// <summary>

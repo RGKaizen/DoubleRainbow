@@ -330,12 +330,12 @@ namespace ColorChooserCSharp
 		private Point _selectedPoint;
 
 		private ColorWheel myColorWheel;
-        private ColorTypes.RGB RGB;
-		private ColorTypes.HSV HSV;
+        private DRColor.RGB RGB;
+		private DRColor.HSV HSV;
 
 		private void ColorChooser_Load(object sender, System.EventArgs e)
 		{
-            ColorTypes.HSV default_color = new ColorTypes.HSV(127, 256, 82);
+            DRColor.HSV default_color = new DRColor.HSV(127, 256, 82);
 
 			// Turn on double-buffering, so the form looks better. 
 			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
@@ -364,7 +364,7 @@ namespace ColorChooserCSharp
 
 			// Set the RGB and HSV values 
 			// of the NumericUpDown controls.
-            SetRGB(new ColorTypes.RGB(default_color));
+            SetRGB(new DRColor.RGB(default_color));
             SetHSV(default_color);		
 		}
 
@@ -387,21 +387,21 @@ namespace ColorChooserCSharp
 			_changeType = ChangeStyle.None;
 		}
 
-        private void SetRGBLabels(ColorTypes.RGB RGB) 
+        private void SetRGBLabels(DRColor.RGB RGB) 
 		{
 			RefreshText(lblRed, RGB.Red);
 			RefreshText(lblBlue, RGB.Blue);
 			RefreshText(lblGreen, RGB.Green);
 		}
 
-		private void SetHSVLabels(ColorTypes.HSV HSV) 
+		private void SetHSVLabels(DRColor.HSV HSV) 
 		{
 			RefreshText(lblHue, HSV.Hue);
 			RefreshText(lblSaturation, HSV.Saturation);
 			RefreshText(lblBrightness, HSV.Value);
 		}
 
-        private void SetRGB(ColorTypes.RGB RGB) 
+        private void SetRGB(DRColor.RGB RGB) 
 		{
             if (RGB == null)
                 return;
@@ -412,7 +412,7 @@ namespace ColorChooserCSharp
 			SetRGBLabels(RGB);
 	   }
 
-		private void SetHSV( ColorTypes.HSV HSV) 
+		private void SetHSV( DRColor.HSV HSV) 
 		{
             if (HSV == null)
                 return;
@@ -453,8 +453,8 @@ namespace ColorChooserCSharp
 				// will cause the color wheel to update the position
 				// of the pointer.
 				_changeType = ChangeStyle.RGB;
-                SetRGB(new ColorTypes.RGB(value.R, value.G, value.B));
-                SetHSV(new ColorTypes.HSV(RGB));
+                SetRGB(new DRColor.RGB(value.R, value.G, value.B));
+                SetHSV(new DRColor.HSV(RGB));
 			}
 		}
 
@@ -479,8 +479,8 @@ namespace ColorChooserCSharp
         private void HandleHSVScroll(object sender, ScrollEventArgs e)  
 		{
 			_changeType = ChangeStyle.HSV;
-			HSV = new ColorTypes.HSV(hsbHue.Value, hsbSaturation.Value, hsbBrightness.Value);
-			SetRGB(new ColorTypes.RGB(HSV));
+			HSV = new DRColor.HSV(hsbHue.Value, hsbSaturation.Value, hsbBrightness.Value);
+			SetRGB(new DRColor.RGB(HSV));
 			SetHSVLabels(HSV);
 			this.Invalidate();
             RainbowUtils.fillBoth(RGB);
@@ -495,8 +495,8 @@ namespace ColorChooserCSharp
 		{
 
 			_changeType = ChangeStyle.RGB;
-            RGB = new ColorTypes.RGB(hsbRed.Value, hsbGreen.Value, hsbBlue.Value);
-            SetHSV(new ColorTypes.HSV(RGB));
+            RGB = new DRColor.RGB(hsbRed.Value, hsbGreen.Value, hsbBlue.Value);
+            SetHSV(new DRColor.HSV(RGB));
 			SetRGBLabels(RGB);
 			this.Invalidate();
             RainbowUtils.fillBoth(RGB);

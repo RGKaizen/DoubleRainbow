@@ -64,7 +64,7 @@ namespace DoubleRainbow
         private void addClrBtn_Click(object sender, EventArgs e)
         {
             if (_chooser == null) return;
-            ColorTypes.RGB clr = new ColorTypes.RGB(_chooser.ActiveColor);
+            DRColor.RGB clr = new DRColor.RGB(_chooser.ActiveColor);
             if (clr == null) return;
 
             currentMood.Color_List.Add(clr);
@@ -128,22 +128,22 @@ namespace DoubleRainbow
             }
         }
 
-        int speed = 100;
+        int speed = 1000;
         Boolean halt = false;
         public void Animation()
         {
-            List<ColorTypes.RGB> color_list = current_moodSeqUI.getColors();
+            List<DRColor.RGB> color_list = current_moodSeqUI.getColors();
             for (int i = 0; i < color_list.Count; i++)
             {
 
-                ColorTypes.RGB cur = color_list[i];
-                ColorTypes.RGB next = color_list[(i+1)%color_list.Count];
+                DRColor.RGB cur = color_list[i];
+                DRColor.RGB next = color_list[(i+1)%color_list.Count];
 
                 // Smoothening effect
                 double j = 1.0;
                 while (j > 0.0)
                 {
-                    ColorTypes.RGB show_color = Blender.variableMix(cur, next, j);
+                    DRColor.RGB show_color = Blender.variableMix(cur, next, j);
                     RainbowUtils.fillBoth(show_color);
                     Thread.Sleep(speed);
                     if (halt) return;

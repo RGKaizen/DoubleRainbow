@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DoubleRainbow
 {
-    public class ColorTypes
+    public class DRColor
     {
 
         public class HSV
@@ -21,7 +21,7 @@ namespace DoubleRainbow
                 Value = V;
             }
 
-            public HSV(ColorTypes.RGB rgb)
+            public HSV(DRColor.RGB rgb)
             {
 
                 // In this function, R, G, and B values must be scaled 
@@ -165,7 +165,7 @@ namespace DoubleRainbow
                 setBlue(b);
             }
 
-            public RGB(ColorTypes.HSV hsv)
+            public RGB(DRColor.HSV hsv)
             {
                 if (hsv == null)
                 {
@@ -297,6 +297,11 @@ namespace DoubleRainbow
                 return false;
             }
 
+
+            public override string ToString()
+            {
+                return "{" + this._red + "," + this._green + "," + this._blue + "}";
+            }
         }
 
         public static Color HSVtoColor(HSV hsv)
@@ -304,7 +309,7 @@ namespace DoubleRainbow
             if (hsv == null)
                 return Color.Blue;
 
-            ColorTypes.RGB RGB = new RGB(hsv);
+            DRColor.RGB RGB = new RGB(hsv);
             return Color.FromArgb(RGB.Red, RGB.Green, RGB.Blue);
         }
 
@@ -312,6 +317,7 @@ namespace DoubleRainbow
         {
             return Color.FromArgb(rgb.Red, rgb.Green, rgb.Blue);
         }
+
 
 
     }

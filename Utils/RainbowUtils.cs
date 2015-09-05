@@ -8,7 +8,7 @@ namespace DoubleRainbow
 {
     public static class RainbowUtils
     {
-        public static void fillBoth(ColorTypes.RGB rgb)
+        public static void fillBoth(DRColor.RGB rgb)
         {
             if (rgb == null) return;
 
@@ -35,11 +35,11 @@ namespace DoubleRainbow
             Rainbow.ZenClear();
         }
 
-        public static ColorTypes.RGB increaseBrightness(ColorTypes.RGB rgb, int amt)
+        public static DRColor.RGB increaseBrightness(DRColor.RGB rgb, int amt)
         {
-            ColorTypes.HSV hsv = new ColorTypes.HSV(rgb);
+            DRColor.HSV hsv = new DRColor.HSV(rgb);
             hsv.Value = hsv.Value + amt > 256 ? 256 : hsv.Value + amt;
-            return new ColorTypes.RGB(hsv);
+            return new DRColor.RGB(hsv);
         }
 
     }

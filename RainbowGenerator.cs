@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Threading;
 using ColorChooserCSharp;
 using System.IO;
+using DoubleRainbow.Interfaces;
 
 namespace DoubleRainbow
 {
@@ -24,13 +25,13 @@ namespace DoubleRainbow
     public partial class RainbowGenerator : Form
     {
         const int KaiLength = Globals.KaiLength;
-        HueGenerator _huey = null;
+        IHueGenerator _huey = null;
         AnimationThread _at = null;
 
-        public RainbowGenerator()
+        public RainbowGenerator(IHueGenerator huey)
         {
             InitializeComponent();
-            _huey = new HueGenerator(127.0f, 55.0f, 127.0f);
+            _huey = huey;
             _at = new AnimationThread(Animate);
         }
 
@@ -38,8 +39,8 @@ namespace DoubleRainbow
         {
 
             // Color Generation 
-            ColorTypes.HSV color_gen = _huey.incrementCylinderSpace((float)Slider1Value, (float)Slider2Value, (float)Slider3Value);
-            ColorTypes.RGB new_color = new ColorTypes.RGB(color_gen);
+            DRColor.HSV color_gen = _huey.getNextColor((float)Slider1Value, (float)Slider2Value, (float)Slider3Value);
+            DRColor.RGB new_color = new DRColor.RGB(color_gen);
 
             // Position Generation
             Rainbow.Kai[23] = new_color;
@@ -49,17 +50,16 @@ namespace DoubleRainbow
             Thread.Sleep(refreshRate);
         }
 
-        // Pushes from the center like this <-- -->
+        // Pushes from the center like this --> <--
         public void Push()
         {
             double mid = 23.5;
             for (int i = 0; i < 23; i++)
             {
                 int wave_up = 0+i;//(int)(Math.Ceiling(mid + i));
-                int wave_down = 46-i;//(int)(Math.Floor(mid - i));
+                int wave_down = 47-i;//(int)(Math.Floor(mid - i));
                 Rainbow.Kai[wave_up] = Rainbow.Kai[wave_up + 1];
                 Rainbow.Kai[wave_down] = Rainbow.Kai[wave_down - 1];
-               // RainbowUtils.update();
             }
         }
 
@@ -112,17 +112,17 @@ namespace DoubleRainbow
             refreshLbl.Text = refreshRate + " ms";
         }
 
-        ColorTypes.RGB[] storedState = new ColorTypes.RGB[KaiLength];
+        DRColor.RGB[] storedState = new DRColor.RGB[KaiLength];
         private void StoreState()
         {
             Array.Copy(Rainbow.Kai, storedState, KaiLength);
         }
 
-        private ColorTypes.RGB AdjustVal(ColorTypes.RGB rgb, double perc)
+        private DRColor.RGB AdjustVal(DRColor.RGB rgb, double perc)
         {
-            ColorTypes.HSV hsv = new ColorTypes.HSV(rgb);
+            DRColor.HSV hsv = new DRColor.HSV(rgb);
             hsv.Value = (int)(hsv.Value * perc);
-            return new ColorTypes.RGB(hsv);
+            return new DRColor.RGB(hsv);
         }
 
     }

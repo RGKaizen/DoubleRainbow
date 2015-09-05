@@ -28,7 +28,7 @@ namespace DoubleRainbow
 
         private void button2_Click(object sender, EventArgs e)
         {
-            new RainbowGenerator().Show();
+            new RainbowGenerator(new HueGenerator(127.0f, 55.0f, 127.0f)).Show();
         }
 
         private void OptionMenu_Closing(object sender, System.ComponentModel.CancelEventArgs e)

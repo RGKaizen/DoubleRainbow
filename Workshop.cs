@@ -12,11 +12,11 @@ namespace DoubleRainbow
         public static Boolean flag = false;
         public static void Demo()
         {
-            ColorTypes.RGB red = new ColorTypes.RGB(127,0,0);
-            ColorTypes.RGB green = new ColorTypes.RGB(0, 0, 127);
+            DRColor.RGB red = new DRColor.RGB(127,0,0);
+            DRColor.RGB green = new DRColor.RGB(0, 0, 127);
 
-            ColorTypes.RGB proper = Blender.ProperMix(red, green, 0.5);
-            ColorTypes.RGB magic = Blender.variableMix(red, green, 0.5);
+            DRColor.RGB proper = Blender.ProperMix(red, green, 0.5);
+            DRColor.RGB magic = Blender.variableMix(red, green, 0.5);
 
             for(int i = 0; i < Globals.ZenLength; i++)
             {
@@ -53,9 +53,9 @@ namespace DoubleRainbow
 
 
         public static Random rand = new Random();
-        public static ColorTypes.RGB RandClr()
+        public static DRColor.RGB RandClr()
         {
-            return new ColorTypes.RGB(rand.Next(128), rand.Next(128), rand.Next(128));
+            return new DRColor.RGB(rand.Next(128), rand.Next(128), rand.Next(128));
         }
     
 

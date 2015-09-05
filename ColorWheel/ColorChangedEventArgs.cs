@@ -7,16 +7,16 @@ namespace DoubleRainbow
         /// <summary>
         /// Written by Ken Getz
         /// </summary>
-        private ColorTypes.RGB mRGB;
-        private ColorTypes.HSV mHSV;
+        private DRColor.RGB mRGB;
+        private DRColor.HSV mHSV;
 
-        public ColorChangedEventArgs(ColorTypes.RGB RGB, ColorTypes.HSV HSV)
+        public ColorChangedEventArgs(DRColor.RGB RGB, DRColor.HSV HSV)
         {
             mRGB = RGB;
             mHSV = HSV;
         }
 
-        public ColorTypes.RGB RGB
+        public DRColor.RGB RGB
         {
             get
             {
@@ -24,7 +24,7 @@ namespace DoubleRainbow
             }
         }
 
-        public ColorTypes.HSV HSV
+        public DRColor.HSV HSV
         {
             get
             {

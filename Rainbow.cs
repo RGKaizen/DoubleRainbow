@@ -124,18 +124,18 @@ namespace DoubleRainbow
         public static Boolean KaiEnabled = false;
         public static Boolean ZenEnabled = false;
 
-        private static ColorTypes.RGB[] _kai;
-        private static ColorTypes.RGB[] _zen;
-        private static ColorTypes.RGB[] _kaiBuffer;
-        private static ColorTypes.RGB[] _zenBuffer;
+        private static DRColor.RGB[] _kai;
+        private static DRColor.RGB[] _zen;
+        private static DRColor.RGB[] _kaiBuffer;
+        private static DRColor.RGB[] _zenBuffer;
 
-        public static ColorTypes.RGB[] Kai
+        public static DRColor.RGB[] Kai
         {
             get { return _kai ; }
             set { Array.Copy(value, _kai, 48);}
         }
 
-        public static ColorTypes.RGB[] Zen
+        public static DRColor.RGB[] Zen
         {
             get { return _zen; }
             set { Array.Copy(value, _zen, 32);}
@@ -145,22 +145,22 @@ namespace DoubleRainbow
         static Rainbow()
         {
 
-            _kai = new ColorTypes.RGB[Globals.KaiLength];
-            _zen = new ColorTypes.RGB[Globals.ZenLength];
+            _kai = new DRColor.RGB[Globals.KaiLength];
+            _zen = new DRColor.RGB[Globals.ZenLength];
 
-            _kaiBuffer = new ColorTypes.RGB[Globals.KaiLength];
-            _zenBuffer = new ColorTypes.RGB[Globals.ZenLength];
+            _kaiBuffer = new DRColor.RGB[Globals.KaiLength];
+            _zenBuffer = new DRColor.RGB[Globals.ZenLength];
 
             for (int i = 0; i < Globals.KaiLength; i++)
             {
-                _kai[i] = new ColorTypes.RGB();
-                _kaiBuffer[i] = new ColorTypes.RGB();
+                _kai[i] = new DRColor.RGB();
+                _kaiBuffer[i] = new DRColor.RGB();
             }
 
             for (int i = 0; i < Globals.ZenLength; i++)
             {
-                _zen[i] = new ColorTypes.RGB();
-                _zenBuffer[i] = new ColorTypes.RGB();
+                _zen[i] = new DRColor.RGB();
+                _zenBuffer[i] = new DRColor.RGB();
             }
         }
 
@@ -177,12 +177,12 @@ namespace DoubleRainbow
         }
 
         // Gurantees position isn't out of bounds
-        public static void KaiSet(int pos, ColorTypes.RGB rgb)
+        public static void KaiSet(int pos, DRColor.RGB rgb)
         {
             posClamp(ref pos, 1);
             _kai[pos] = rgb;
         }
-        public static void ZenSet(int pos, ColorTypes.RGB rgb)
+        public static void ZenSet(int pos, DRColor.RGB rgb)
         {
             posClamp(ref pos, 2);
             _zen[pos] = rgb;
@@ -221,8 +221,8 @@ namespace DoubleRainbow
         {
             clear(1);
             clear(2);
-            sendClr(0, new ColorTypes.RGB(127, 0, 0), 1);
-            sendClr(0, new ColorTypes.RGB(0, 127, 0), 2);
+            sendClr(0, new DRColor.RGB(127, 0, 0), 1);
+            sendClr(0, new DRColor.RGB(0, 127, 0), 2);
             display(1);
             display(2);
         }
@@ -233,11 +233,19 @@ namespace DoubleRainbow
                 double zen_ratio = i;
                 zen_ratio = zen_ratio * Globals.KaiLength / Globals.ZenLength;
                 //Console.WriteLine("Kai[" + zen_ratio + "] Zen[" + i + "]");
-                Zen[i] = Kai[(int)Math.Floor(zen_ratio)];
+                Zen[i] = attenuateStrip(Kai[(int)Math.Floor(zen_ratio)]);
             }
             if (ZenUpdate())
                 ZenShow();
         }
+
+        private static DRColor.RGB attenuateStrip(DRColor.RGB clr)
+        {
+            float dim = 0.3f;
+            DRColor.RGB new_clr = new DRColor.RGB((int)(clr.Red * dim), (int)(clr.Green * dim), (int)(clr.Blue * dim));
+            return new_clr;
+        }
+
 
         #endregion
 
@@ -258,7 +266,7 @@ namespace DoubleRainbow
         /*
         *  Used to push LED changes to strip.
         */
-        private static bool update(ColorTypes.RGB[] main, ColorTypes.RGB[] buffer, int length, int strip)
+        private static bool update(DRColor.RGB[] main, DRColor.RGB[] buffer, int length, int strip)
         {
             bool hasChanged = false;
             for (int i = 0; i < length; i++)
@@ -274,7 +282,7 @@ namespace DoubleRainbow
         }
 
         // Immediately updates the ardunio's buffer for the color
-        private static bool sendClr(int pos, ColorTypes.RGB rgb, int strip)
+        private static bool sendClr(int pos, DRColor.RGB rgb, int strip)
         {
             posClamp(ref pos, 1);
 
@@ -336,7 +344,7 @@ namespace DoubleRainbow
         // Clears the leds
         private static void clear(int strip)
         {
-            ColorTypes.RGB blank = new ColorTypes.RGB(0, 0, 0);
+            DRColor.RGB blank = new DRColor.RGB(0, 0, 0);
 
             if (strip == 1)
             {

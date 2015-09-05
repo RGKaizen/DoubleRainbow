@@ -6,10 +6,10 @@
 /*****************************************************************************/
 
 // Chose 2 pins for output; can be any valid output pins:
-int dataPin2  = 11; //PWM
-int clockPin2 = 3;
-int dataPin1  = 5; //PWM
-int clockPin1 = 8;
+int dataPin2  = 5; //PWM
+int clockPin2 = 8;
+int dataPin1  = 11; //PWM
+int clockPin1 = 3;
 
 // First parameter is the number of LEDs in the strand.  The LED strips
 // are 32 LEDs per meter but you can extend or cut the strip.  Next two
@@ -43,13 +43,13 @@ void SpeedTest()
     Serial.print("dsd\n");
     for(int i = 0; i < 32; i++)
     {
-      strip2.setPixelColor(i, strip1.Color(0,127,0));
-      strip2.show();
+      strip1.setPixelColor(i, strip1.Color(0,127,0));
+      strip1.show();
     }
     for(int i = 0; i < 32; i++)
     {
-      strip1.setPixelColor(i, strip1.Color(0,0,127));
-      strip1.show();
+      strip2.setPixelColor(i, strip2.Color(127,0,0));
+      strip2.show();
     }
   }
 }

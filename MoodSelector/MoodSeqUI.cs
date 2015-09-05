@@ -36,12 +36,12 @@ namespace DoubleRainbow
             this.Invalidate();
         }
 
-        public List<ColorTypes.RGB> getColors()
+        public List<DRColor.RGB> getColors()
         {
             return mood.Color_List;
         }
 
-        public void addColor(ColorTypes.RGB rgb)
+        public void addColor(DRColor.RGB rgb)
         {
             if (mood.Color_List.Count == 10)
             {
@@ -64,10 +64,10 @@ namespace DoubleRainbow
 
                 Size rect_size = new Size(this.ClientSize.Width / mood.Color_List.Count, this.ClientSize.Height);
                 int count = 0;
-                foreach (ColorTypes.RGB rgb in mood.Color_List)
+                foreach (DRColor.RGB rgb in mood.Color_List)
                 {
                     Point p = new Point(count * rect_size.Width, 0);
-                    SolidBrush myBrush = new SolidBrush(ColorTypes.RGBtoColor(RainbowUtils.increaseBrightness(rgb, 130)));
+                    SolidBrush myBrush = new SolidBrush(DRColor.RGBtoColor(RainbowUtils.increaseBrightness(rgb, 130)));
                     g.FillEllipse(myBrush, new Rectangle(p, rect_size));
                     myBrush.Dispose();             
                     count++;

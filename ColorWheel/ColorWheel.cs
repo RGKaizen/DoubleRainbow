@@ -65,8 +65,8 @@ namespace DoubleRainbow
         private Color selectedColor = Color.White;
         private Color fullColor;
 
-        private ColorTypes.RGB RGB;
-        private ColorTypes.HSV HSV = new ColorTypes.HSV(0,0,0);
+        private DRColor.RGB RGB;
+        private DRColor.HSV HSV = new DRColor.HSV(0,0,0);
 
         // Locations for the two "pointers" on the form.
         private Point colorPoint;
@@ -76,7 +76,7 @@ namespace DoubleRainbow
         private int brightnessMin;
         private int brightnessMax;
 
-        public ColorWheel(Rectangle colorRectangle, Rectangle brightnessRectangle, Rectangle selectedColorRectangle, ColorTypes.HSV default_color)
+        public ColorWheel(Rectangle colorRectangle, Rectangle brightnessRectangle, Rectangle selectedColorRectangle, DRColor.HSV default_color)
         {
 
             // Caller must provide locations for color wheel
@@ -141,7 +141,7 @@ namespace DoubleRainbow
             }
         }
 
-        protected void OnColorChanged(ColorTypes.RGB RGB, ColorTypes.HSV HSV)
+        protected void OnColorChanged(DRColor.RGB RGB, DRColor.HSV HSV)
         {
             ColorChangedEventArgs e = new ColorChangedEventArgs(RGB, HSV);
             ColorChanged(this, e);
@@ -175,7 +175,7 @@ namespace DoubleRainbow
             currentState = MouseState.MouseUp;
         }
 
-        public void Draw(Graphics g, ColorTypes.HSV HSV)
+        public void Draw(Graphics g, DRColor.HSV HSV)
         {
             // Given HSV values, update the screen.
             this._g = g;
@@ -184,11 +184,11 @@ namespace DoubleRainbow
             UpdateDisplay();
         }
 
-        public void Draw(Graphics g, ColorTypes.RGB RGB)
+        public void Draw(Graphics g, DRColor.RGB RGB)
         {
             // Given RGB values, calculate HSV and then update the screen.
             this._g = g;
-            this.HSV = new ColorTypes.HSV(RGB);
+            this.HSV = new DRColor.HSV(RGB);
             CalcCoordsAndUpdate(this.HSV);
             UpdateDisplay();
         }
@@ -258,7 +258,7 @@ namespace DoubleRainbow
                     newBrightnessPoint = new Point(brightnessX, newPoint.Y);
                     brightness = (int)((brightnessMax - newPoint.Y) * brightnessScaling);
                     HSV.Value = brightness;
-                    RGB = new ColorTypes.RGB(HSV);
+                    RGB = new DRColor.RGB(HSV);
                     break;
 
                 case MouseState.ClickOnColor:
@@ -297,11 +297,11 @@ namespace DoubleRainbow
                     HSV.Hue = (int)(degrees * 255 / 360);
                     HSV.Saturation = (int)(distance * 255);
                     HSV.Value = brightness;
-                    RGB = new ColorTypes.RGB(HSV);
-                    fullColor = ColorTypes.HSVtoColor(new ColorTypes.HSV(HSV.Hue, HSV.Saturation, 255));
+                    RGB = new DRColor.RGB(HSV);
+                    fullColor = DRColor.HSVtoColor(new DRColor.HSV(HSV.Hue, HSV.Saturation, 255));
                     break;
             }
-            selectedColor = ColorTypes.HSVtoColor(HSV);
+            selectedColor = DRColor.HSVtoColor(HSV);
 
             // Raise an event back to the parent form,
             // so the form can update any UI it's using 
@@ -363,7 +363,7 @@ namespace DoubleRainbow
             }
         }
 
-        private void CalcCoordsAndUpdate(ColorTypes.HSV HSV)
+        private void CalcCoordsAndUpdate(DRColor.HSV HSV)
         {
             // Convert color to real-world coordinates and then calculate
             // the various points. HSV.Hue represents the degrees (0 to 360), 
@@ -386,13 +386,13 @@ namespace DoubleRainbow
 
             // Store information about the selected color.
             brightness = HSV.Value;
-            selectedColor = ColorTypes.HSVtoColor(HSV);
-            RGB = new ColorTypes.RGB(HSV);
+            selectedColor = DRColor.HSVtoColor(HSV);
+            RGB = new DRColor.RGB(HSV);
 
             // The full color is the same as HSV, except that the 
             // brightness is set to full (255). This is the top-most
             // color in the brightness gradient.
-            fullColor = ColorTypes.HSVtoColor(new ColorTypes.HSV(HSV.Hue, HSV.Saturation, 255));
+            fullColor = DRColor.HSVtoColor(new DRColor.HSV(HSV.Hue, HSV.Saturation, 255));
         }
 
         private void DrawLinearGradient(Color TopColor)
@@ -505,7 +505,7 @@ namespace DoubleRainbow
 
             for (int i = 0; i <= COLOR_COUNT - 1; i++)
             {
-                Color temp = ColorTypes.HSVtoColor(new ColorTypes.HSV((int)((double)(i * 255) / COLOR_COUNT), 255, 255));
+                Color temp = DRColor.HSVtoColor(new DRColor.HSV((int)((double)(i * 255) / COLOR_COUNT), 255, 255));
                 int r = max(temp.R * 2);
                 int g = max(temp.G * 2);
                 int b = max(temp.B * 2);
